@@ -1,0 +1,36 @@
+$post-width: 50vw
+$create-post-button-width: 50vw
+
+.PostList.Mobile
+  display: flex
+  flex-direction: column
+  align-items: center
+  margin-bottom: 60px
+  margin-top: 10px
+  width: 100vw
+  
+  .search-input
+    margin-bottom: 20px
+    width: 70%
+    position: relative
+    left: 4vw
+    
+  .create-post-container
+    background: $bg
+    position: fixed
+    bottom: 0
+    left: 0
+    height: 80px
+    width: 100%
+    .create-post-button
+      position: absolute
+      z-index: 1
+      right: calc(50vw - $create-post-button-width / 2)
+      bottom: 20px
+
+      height: 40px
+      width: $create-post-button-width
+  .posts 
+    display: grid
+    gap: 20px
+
