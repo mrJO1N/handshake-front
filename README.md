@@ -1,4 +1,5 @@
-made with C.R.A.C.O
+react frontend for handshake.ru
+I study in university and it is my home work for subject 'social project'
 
 ## init
 
