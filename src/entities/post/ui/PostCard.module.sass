@@ -1,0 +1,47 @@
+@use '@/shared/config/styles/variables' as *
+
+.post
+  font-family: $main-font
+  color: $dark-blue
+  font-weight: 800
+  font-style: italic
+  line-height: 150%
+  letter-spacing: 0
+  border: 2px solid $dark-blue
+  width: 50vw
+  min-width: 370px
+  height: 30vh
+  background: $component-bg
+  box-shadow: $bottom-shadow
+
+  *
+    background: $component-bg
+
+.header
+  border-bottom: 1px solid $dark-blue
+  height: 70px
+  display: flex
+  align-items: center
+  justify-content: space-between
+
+.title,
+.postId
+  margin: 0 35px
+
+.title
+  font-size: 1.5em
+
+.separator
+  width: 1px
+  height: 100%
+  background-color: $dark-blue
+
+.postId
+  font-size: 2em
+
+.content
+  margin-left: 40px
+  display: flex
+  height: 20vh
+  flex-direction: column
+  justify-content: space-evenly
