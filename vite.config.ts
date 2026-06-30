@@ -30,6 +30,11 @@ export default defineConfig({
     sourcemap: true,
   },
 
+  preview: {
+    host: "0.0.0.0",
+    port: 80
+  },
+
   test: {
     environment: "jsdom",
     globals: true,

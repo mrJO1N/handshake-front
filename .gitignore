@@ -9,6 +9,8 @@
 /coverage
 
 notes
+**.env*
+!.env.example
 
 # dev tests
 **/*.dt*
