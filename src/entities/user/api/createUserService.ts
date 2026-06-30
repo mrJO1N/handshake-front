@@ -1,9 +1,9 @@
 import type { HttpClient } from '@/shared/api';
-import type { AuthResponse, RegisterDto } from '../model/types';
+import type { AuthResponse, LoginDto, RegisterDto } from '../model/types';
 
 export const createUserService = (http: HttpClient) => ({
-  register: (dto: RegisterDto) =>
-    http.post<AuthResponse>('/auth/register', dto),
+  register: (dto: RegisterDto) => http.post<AuthResponse>('/register', dto),
+  login: (dto: LoginDto) => http.post<AuthResponse>('/login', dto),
 });
 
 export type UserService = ReturnType<typeof createUserService>;

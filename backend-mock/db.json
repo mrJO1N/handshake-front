@@ -1,0 +1,18 @@
+{
+  "posts": [
+    {
+      "title": "первый",
+      "theUserWants": "денег",
+      "theUserOffers": "время",
+      "id": 1
+    }
+  ],
+  "users": [
+    {
+      "email": "some@mail.ru",
+      "password": "$2a$10$WPLSyQRPQmb8CutdW80n8u1zvffWLxR7iWv0epZRaW7SwLJkB9rt2",
+      "username": "something",
+      "id": 1
+    }
+  ]
+}

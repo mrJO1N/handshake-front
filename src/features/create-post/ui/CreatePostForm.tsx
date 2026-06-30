@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, MinimalTextInput } from '@/shared/ui';
+import { useCreatePost } from '@/entities/post';
 import styles from './CreatePostForm.module.sass';
 
 interface CreatePostFormProps {
@@ -10,11 +11,16 @@ export const CreatePostForm = ({ onSuccess }: CreatePostFormProps) => {
   const [title, setTitle] = useState('');
   const [theUserWants, setWants] = useState('');
   const [theUserOffers, setOffers] = useState('');
+  const { mutateAsync, isPending } = useCreatePost();
 
-  const onSubmit = (e: React.SubmitEvent) => {
+  const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('create post:', { title, theUserWants, theUserOffers }); // api plug
-    onSuccess();
+    try {
+      await mutateAsync({ title, theUserWants, theUserOffers });
+      onSuccess();
+    } catch {
+      // здесь можно показать ошибку; пока модалку не закрываем
+    }
   };
 
   return (
@@ -36,8 +42,8 @@ export const CreatePostForm = ({ onSuccess }: CreatePostFormProps) => {
         value={theUserOffers}
         onChange={(e) => setOffers(e.target.value)}
       />
-      <Button variant="colored" type="submit">
-        Создать
+      <Button variant="colored" type="submit" disabled={isPending}>
+        {isPending ? 'Создаём…' : 'Создать'}
       </Button>
     </form>
   );

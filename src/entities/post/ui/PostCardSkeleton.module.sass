@@ -1,0 +1,50 @@
+@use '@/shared/config/styles/variables' as *
+
+@keyframes shimmer
+  0%
+    opacity: 0.5
+  50%
+    opacity: 1
+  100%
+    opacity: 0.5
+
+.skeleton
+  border: 2px solid $dark-blue
+  width: 50vw
+  min-width: 370px
+  height: 30vh
+  background: $component-bg
+  box-shadow: $bottom-shadow
+  animation: shimmer 1.5s ease-in-out infinite
+
+.header
+  border-bottom: 1px solid $dark-blue
+  height: 70px
+  display: flex
+  align-items: center
+  padding: 0 35px
+
+.titleBar
+  width: 200px
+  height: 24px
+  border-radius: 6px
+  background: $dark-blue
+  opacity: 0.25
+
+.content
+  padding: 30px 40px
+  display: flex
+  flex-direction: column
+  gap: 24px
+
+.line
+  height: 18px
+  border-radius: 6px
+  background: $dark-blue
+  opacity: 0.25
+
+  &:first-child
+    width: 60%
+
+  &:last-child
+    width: 45%

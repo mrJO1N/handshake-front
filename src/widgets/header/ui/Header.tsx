@@ -1,5 +1,6 @@
 import { NavLink, Link } from 'react-router-dom';
 import { RegisterModal } from '@/features/auth-register';
+import { LoginModal } from "@/features/auth-login"
 import { useAuthModals } from '../model/useAuthModals';
 import styles from './Header.module.sass';
 
@@ -51,8 +52,16 @@ export const Header = () => {
         </div>
       </div>
 
-      <RegisterModal isOpen={active === 'register'} onClose={close} />
-      {/* LoginModal появится, когда сделаешь features/auth-login */}
+      <LoginModal
+        isOpen={active === 'login'}
+        onClose={close}
+        onSwitchToRegister={openRegister}
+      />
+      <RegisterModal
+        isOpen={active === 'register'}
+        onClose={close}
+        onSwitchToLogin={openLogin}
+      />
     </header>
   );
 };

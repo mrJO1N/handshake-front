@@ -10,7 +10,13 @@ export interface RegisterDto {
   password: string;
 }
 
-export interface AuthResponse {
-  user: IUser;
-  token: string;
+export interface LoginDto {
+  email: string;
+  password: string;
 }
+
+export interface AuthResponse {
+  accessToken: string;
+  user: IUser;
+}
+

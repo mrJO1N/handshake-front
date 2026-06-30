@@ -1,9 +1,13 @@
-import type { ReactNode } from 'react';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
 import { QueryProvider } from './QueryProvider';
 import { ServicesProvider } from './ServicesProvider';
+import { ReactNode } from 'react';
 
 export const AppProviders = ({ children }: { children: ReactNode }) => (
-    <QueryProvider>
-        <ServicesProvider>{children}</ServicesProvider>
-    </QueryProvider>
+    <Provider store={store}>
+        <QueryProvider>
+            <ServicesProvider>{children}</ServicesProvider>
+        </QueryProvider>
+    </Provider>
 );
