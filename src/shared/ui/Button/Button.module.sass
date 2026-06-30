@@ -1,0 +1,50 @@
+@use '@/shared/config/styles/variables' as *
+
+$animation-delay: 0.5s
+
+.button
+  color: $main-blue
+  font-family: $main-font
+  font-size: 1.2rem
+  padding: 2px 10px
+  background: none
+  cursor: pointer
+  border: none
+  font-weight: 800
+  font-style: italic
+  line-height: 150%
+  letter-spacing: 0
+  transition: background $animation-delay ease, color $animation-delay ease, border $animation-delay ease, margin $animation-delay ease
+
+  &:disabled
+    opacity: 0.5
+    cursor: not-allowed
+
+  &.clear
+    border: 1px solid $bg
+    border-radius: 16px
+
+    &:hover
+      background: $blue
+      color: $main-blue
+      border: 1px solid $dark-blue
+
+  &.default,
+  &.colored
+    border-radius: 16px
+    border: 1px solid $dark-blue
+
+  &.default
+    &:hover
+      background: $main-blue
+      color: $blue
+
+  &.colored
+    background: $main-blue
+    color: white
+    border: 1px solid $dark-blue
+    box-shadow: $bottom-shadow
+
+    &:hover
+      background: $blue
+      color: $main-blue

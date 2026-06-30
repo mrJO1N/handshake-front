@@ -1,0 +1,71 @@
+@use '@/shared/config/styles/variables' as *
+
+$input-width: 100%
+$input-max-width: 20vw
+$search-icon-size: 40px
+$animation-delay: 0.5s
+
+.input
+    display: flex
+    position: relative
+    left: $search-icon-size
+    input
+        width: calc($input-width - $search-icon-size)
+        height: $search-icon-size
+        border: 1px solid $dark-blue
+        border-radius: 50px
+        background: $bg
+        color: $grey
+        font-size: 1.4rem
+        box-shadow: $bottom-shadow
+        font-weight: 800
+        font-style: italic
+        line-height: 150%
+        letter-spacing: 0
+        transition: background $animation-delay ease-out, color $animation-delay ease-out
+        padding-left: 10px
+        padding-right: calc(#{$search-icon-size} + 5px)
+
+        &:not(.search)
+            padding-right: 10px
+
+        &::placeholder
+            color: $dark-grey
+
+        &:focus
+            outline: 2px solid $main-blue
+            background: $blue
+
+.searchIcon
+    position: relative
+    cursor: pointer
+    border: none
+    right: $search-icon-size
+    background: $main-blue
+    background-repeat: no-repeat
+    background-position: center
+    border-radius: 50px
+    height: calc($search-icon-size + 1px)
+    width: calc($search-icon-size + 1px)
+    transition: background $animation-delay ease-in-out
+
+    &:hover
+        background: $blue
+        border: 1px solid $main-blue
+
+.arrow
+    display: block
+    height: calc($search-icon-size + 1px)
+    width: calc($search-icon-size + 1px)
+    mask-image: url(@assets/svg/arrow.svg)
+    mask-position: center
+    mask-composite: exclude
+    mask-repeat: no-repeat
+    box-sizing: border-box
+    transition: background $animation-delay ease-in-out, border $animation-delay ease-in-out
+    background: $blue
+    border: 1px solid $blue
+
+    &:hover
+        background: $main-blue
+        border: 1px solid $main-blue

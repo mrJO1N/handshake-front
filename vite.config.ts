@@ -1,7 +1,7 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import path from "path";
+import path, { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,12 +9,18 @@ export default defineConfig({
   // mirroring the old CracoAlias({ source: "tsconfig" }) setup.
   plugins: [react(), tsconfigPaths()],
 
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      "@assets": resolve(__dirname, "assets")
+    },
+  },
   css: {
     preprocessorOptions: {
       sass: {
-        additionalData: `@import "${path
-          .resolve(__dirname, "src/constants/style-constants.sass")
-          .replace(/\\/g, "/")}"\n`,
+        loadPaths: [
+          resolve(__dirname, 'src'),
+        ],
       },
     },
   },

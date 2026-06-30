@@ -1,0 +1,51 @@
+@use '@/shared/config/styles/variables' as *
+
+$top-margins: 10vw
+
+.header
+  position: sticky
+  top: 0
+  z-index: 1
+  background: $bg
+  border-bottom: 3px solid $main-blue
+  margin: 0 $top-margins
+
+.inner
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+.logo
+  margin-left: 4vw
+  color: $main-blue
+  font-family: $main-font-italic
+  font-weight: 900
+  font-style: italic
+  font-size: 3rem
+  line-height: 180%
+  letter-spacing: 0
+  text-decoration: none
+
+.nav
+  display: flex
+  gap: 20px
+
+.navLink
+  color: $main-blue
+  font-weight: 600
+  text-decoration: none
+  opacity: 0.65
+  transition: opacity 0.15s
+
+  &:hover
+    opacity: 1
+
+.navLinkActive
+  opacity: 1
+  text-decoration: underline
+
+.actions
+  margin-right: 4vw
+  display: flex
+  align-items: center
+  gap: 10px
