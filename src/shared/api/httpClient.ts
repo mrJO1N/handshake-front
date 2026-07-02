@@ -21,9 +21,15 @@ const request = async <T>(
     signal: options?.signal,
   });
 
-  // парсим тело один раз, аккуратно (может быть пустым, например 204)
   const text = await response.text();
-  const data = text ? JSON.parse(text) : null;
+
+  let data
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch (err) {
+    throw new HttpError(response.status, "not a json", data);
+
+  }
 
   if (!response.ok) {
     const message =

@@ -14,6 +14,8 @@ export const PostsPage = () => {
   const [query, setQuery] = useState(''); //search
   const isAuth = useAppSelector(selectIsAuth);
 
+
+
   const { data: posts = [], isLoading, isError } = usePosts(query);
 
   const handleSearch = () => setQuery(searchValue);

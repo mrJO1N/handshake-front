@@ -5,6 +5,10 @@ import { useAppSelector } from '@/app/store/hooks';
 import { selectUser } from '@/entities/session';
 
 import styles from './CreatePostForm.module.sass';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CreatePostFormValues, createPostSchema } from '../model/schema';
+import { useForm } from 'react-hook-form';
+import { HttpError } from '@/shared/api';
 
 interface CreatePostFormProps {
   onSuccess: () => void;
@@ -17,43 +21,61 @@ export const CreatePostForm = ({ onSuccess }: CreatePostFormProps) => {
   const { mutateAsync, isPending } = useCreatePost();
   const user = useAppSelector(selectUser);
 
-  const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<CreatePostFormValues>({
+    resolver: zodResolver(createPostSchema),
+  });
+
+  const onSubmit = async (values: CreatePostFormValues) => {
     e.preventDefault();
     if (!user) return;
 
     try {
       await mutateAsync({
-        title,
-        theUserWants,
-        theUserOffers,
+        ...values,
         author: user.username,
         createdAt: new Date().toISOString()
       });
       onSuccess();
-    } catch {
-      // здесь можно показать ошибку; пока модалку не закрываем
+    } catch (err) {
+      if (err instanceof HttpError && err.status === 400) {
+        setError('root', { message: 'Неверный email или пароль' });
+      } else {
+        setError('root', { message: 'Не удалось создать пост. Попробуйте ещё раз' });
+      }
     }
   };
 
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
-      <MinimalTextInput
-        placeholder="Заголовок"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <MinimalTextInput
-        variant="textarea"
-        placeholder="Что хотите получить"
-        value={theUserWants}
-        onChange={(e) => setWants(e.target.value)}
-      />
-      <MinimalTextInput
-        variant="textarea"
-        placeholder="Что предлагаете"
-        value={theUserOffers}
-        onChange={(e) => setOffers(e.target.value)}
-      />
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <MinimalTextInput
+          placeholder="Заголовок"
+          {...register("title")}
+        />
+        {errors.title && <span className={styles.error}>{errors.title.message}</span>}
+      </div>
+      <div>
+        <MinimalTextInput
+          variant="textarea"
+          placeholder="Что хотите получить"
+          {...register("theUserWants")}
+        />
+        {errors.theUserWants && <span className={styles.error}>{errors.theUserWants.message}</span>}
+      </div>
+      <div>
+        <MinimalTextInput
+          variant="textarea"
+          placeholder="Что предлагаете"
+          {...register("theUserOffers")}
+        />
+        {errors.theUserOffers && <span className={styles.error}>{errors.theUserOffers.message}</span>}
+      </div>
       <Button variant="colored" type="submit" disabled={isPending}>
         {isPending ? 'Создаём…' : 'Создать'}
       </Button>

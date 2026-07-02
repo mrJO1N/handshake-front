@@ -35,7 +35,6 @@ export const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     }, CLOSE_ANIMATION_MS);
 
     return () => clearTimeout(closeTimeout.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   useEffect(() => {

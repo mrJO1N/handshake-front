@@ -7,7 +7,7 @@ export const loginSchema = z.object({
 
 export const registerSchema = z
   .object({
-    email: z.string().email('Некорректный email'),
+    email: z.email('Некорректный email'),
     username: z
       .string()
       .min(3, 'Минимум 3 символа')

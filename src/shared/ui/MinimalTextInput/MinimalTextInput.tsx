@@ -1,50 +1,67 @@
-import { forwardRef, useState, type ClipboardEventHandler, type InputHTMLAttributes, type Ref, type TextareaHTMLAttributes } from 'react';
+import { forwardRef, useState, type InputHTMLAttributes, type Ref, type TextareaHTMLAttributes, type ReactElement } from 'react';
 import styles from './MinimalTextInput.module.sass';
+import { preventClipboard } from '@/features/auth/lib/formFunctions';
 
-type MinimalTextInputVisibility = 'row' | 'textarea';
-
-interface MinimalTextInputProps extends InputHTMLAttributes<HTMLInputElement> {
-    variant?: MinimalTextInputVisibility;
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+    variant?: "row"
 }
 
-const preventClipboard: ClipboardEventHandler<HTMLInputElement> = (e) => e.preventDefault();
+type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    variant: "textarea"
+}
 
-export const MinimalTextInput = forwardRef<HTMLInputElement | HTMLTextAreaElement, MinimalTextInputProps>(
-    ({ variant = 'row', className = '', type, ...rest }, ref) => {
-        const isPassword = type === 'password';
-        const [isVisible, setIsVisible] = useState(false);
+type MinimalTextInputProps = InputProps | TextareaProps
 
-        return (
-            <div className={[styles.minimalTextInput, className].filter(Boolean).join(' ')}>
-                {variant === 'row' ? (
-                    <input
-                        {...rest}
-                        type={isPassword ? (isVisible ? 'text' : 'password') : type}
-                        ref={ref as Ref<HTMLInputElement>}
-                        {...(isPassword && {
-                            onCopy: preventClipboard,
-                            onPaste: preventClipboard,
-                            onCut: preventClipboard,
-                        })}
-                    />
-                ) : (
-                    <textarea
-                        {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
-                        ref={ref as Ref<HTMLTextAreaElement>}
-                    />
-                )}
-                {isPassword && (
-                    <button
-                        type="button"
-                        className={styles.eyeToggle}
-                        onClick={() => setIsVisible((prev) => !prev)}
-                    >
-                        {isVisible ? '1' : '0'}
-                    </button>
-                )}
-            </div>
-        );
-    },
-);
+// Type overloads
+function MinimalTextInputf(
+    props: TextareaProps,
+    ref: Ref<HTMLTextAreaElement>
+): ReactElement;
 
+function MinimalTextInputf(
+    props: InputProps,
+    ref: Ref<HTMLInputElement>
+): ReactElement;
+
+// Implementation
+function MinimalTextInputf(
+    { variant = 'row', className = '', ...rest }: MinimalTextInputProps,
+    ref: Ref<HTMLInputElement | HTMLTextAreaElement>
+) {
+    const isPassword = variant === 'row' && 'type' in rest && rest.type === 'password';
+    const [isVisible, setIsVisible] = useState(false);
+
+    return (
+        <div className={[styles.minimalTextInput, className].filter(Boolean).join(' ')}>
+            {variant === 'row' ? (
+                <input
+                    {...(rest as InputHTMLAttributes<HTMLInputElement>)}
+                    type={isPassword ? (isVisible ? 'text' : 'password') : (rest as any).type}
+                    ref={ref as Ref<HTMLInputElement>}
+                    {...(isPassword && {
+                        onCopy: preventClipboard,
+                        onPaste: preventClipboard,
+                        onCut: preventClipboard,
+                    })}
+                />
+            ) : (
+                <textarea
+                    {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
+                    ref={ref as Ref<HTMLTextAreaElement>}
+                />
+            )}
+            {isPassword && (
+                <button
+                    type="button"
+                    className={styles.eyeToggle}
+                    onClick={() => setIsVisible((prev) => !prev)}
+                >
+                    {isVisible ? 'hide' : 'show'}
+                </button>
+            )}
+        </div>
+    );
+}
+
+export const MinimalTextInput = forwardRef(MinimalTextInputf);
 MinimalTextInput.displayName = 'MinimalTextInput';

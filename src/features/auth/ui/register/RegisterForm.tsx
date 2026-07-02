@@ -4,7 +4,7 @@ import { Button, MinimalTextInput } from '@/shared/ui';
 import { HttpError } from '@/shared/api';
 import { registerSchema, type RegisterFormValues } from '../../model/schema';
 import { useRegister } from '../../model/useRegister';
-import styles from './RegisterForm.module.sass';
+import styles from '../AuthForm.module.sass';
 
 interface RegisterFormProps {
   onSuccess: () => void;

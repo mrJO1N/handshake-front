@@ -1,12 +1,11 @@
-import { forwardRef, useState, type ClipboardEventHandler, type InputHTMLAttributes } from 'react';
+import { forwardRef, useState, type InputHTMLAttributes } from 'react';
 import styles from './Input.module.sass';
+import { preventClipboard } from '@/features/auth/lib/formFunctions';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     variant?: 'default' | 'search';
     onSearch?: () => void;
 }
-
-const preventClipboard: ClipboardEventHandler<HTMLInputElement> = (e) => e.preventDefault();
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
     ({ variant = 'default', className = '', onSearch, type, ...rest }, ref) => {
@@ -41,7 +40,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         className={styles.eyeToggle}
                         onClick={() => setIsVisible((prev) => !prev)}
                     >
-                        {isVisible ? '1' : '0'}
+                        {isVisible ? 'hide' : 'show'}
                     </button>
                 )}
             </div>
