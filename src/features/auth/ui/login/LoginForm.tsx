@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, MinimalTextInput } from '@/shared/ui';
 import { HttpError } from '@/shared/api';
-import { loginSchema, type LoginFormValues } from '../model/schema';
-import { useLogin } from '../model/useLogin';
+import { loginSchema, type LoginFormValues } from '../../model/schema';
+import { useLogin } from '../../model/useLogin';
 import styles from './LoginForm.module.sass';
 
 interface LoginFormProps {

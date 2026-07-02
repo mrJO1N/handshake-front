@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Button, MinimalTextInput } from '@/shared/ui';
 import { useCreatePost } from '@/entities/post';
+import { useAppSelector } from '@/app/store/hooks';
+import { selectUser } from '@/entities/session';
+
 import styles from './CreatePostForm.module.sass';
 
 interface CreatePostFormProps {
@@ -12,11 +15,20 @@ export const CreatePostForm = ({ onSuccess }: CreatePostFormProps) => {
   const [theUserWants, setWants] = useState('');
   const [theUserOffers, setOffers] = useState('');
   const { mutateAsync, isPending } = useCreatePost();
+  const user = useAppSelector(selectUser);
 
   const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) return;
+
     try {
-      await mutateAsync({ title, theUserWants, theUserOffers });
+      await mutateAsync({
+        title,
+        theUserWants,
+        theUserOffers,
+        author: user.username,
+        createdAt: new Date().toISOString()
+      });
       onSuccess();
     } catch {
       // здесь можно показать ошибку; пока модалку не закрываем

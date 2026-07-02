@@ -11,7 +11,8 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: (dto: LoginDto) => userService.login(dto),
     onSuccess: ({ user, accessToken }) => {
-      dispatch(setSession({ user, accessToken })); // токен → Redux
+      userService.saveToken(accessToken)
+      dispatch(setSession({user, accessToken}))
     },
   });
 };

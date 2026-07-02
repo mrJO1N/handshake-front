@@ -2,17 +2,50 @@
   "posts": [
     {
       "title": "первый",
-      "theUserWants": "денег",
-      "theUserOffers": "время",
+      "theUserWants": "хочу",
+      "theUserOffers": "дам",
+      "author": "joe",
+      "createdAt": "2026-07-02T18:49:02.577Z",
       "id": 1
+    },
+    {
+      "title": "первый",
+      "theUserWants": "хочу",
+      "theUserOffers": "дам",
+      "author": "joe",
+      "createdAt": "2026-07-02T18:49:02.577Z",
+      "id": 2
+    },
+    {
+      "title": "первый",
+      "theUserWants": "хочу",
+      "theUserOffers": "дам",
+      "author": "joe",
+      "createdAt": "2026-07-02T18:49:02.577Z",
+      "id": 3
+    }, {
+      "title": "первый",
+      "theUserWants": "хочу",
+      "theUserOffers": "дам",
+      "author": "joe",
+      "createdAt": "2026-07-02T18:49:02.577Z",
+      "id": 4
+    }, {
+      "title": "первый 5",
+      "theUserWants": "хочу",
+      "theUserOffers": "дам",
+      "author": "joe10",
+      "createdAt": "2026-07-02T18:49:02.577Z",
+      "id": 5
     }
   ],
   "users": [
     {
-      "email": "some@mail.ru",
-      "password": "$2a$10$WPLSyQRPQmb8CutdW80n8u1zvffWLxR7iWv0epZRaW7SwLJkB9rt2",
-      "username": "something",
-      "id": 1
+      "id": 1,
+      "username": "joe",
+      "email": "joe@mail.ru",
+      "password": "joelol",
+      "createdAt": "2026-07-02T18:48:41.524Z"
     }
   ]
 }

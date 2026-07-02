@@ -25,7 +25,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "test": "vitest run",
-    "mock": "cd backend-mock && json-server db.json -m ../node_modules/json-server-auth --port 3901",
+    "mock": "cd backend-mock && JWT_SECRET=hello json-server db.json -m ./middleware.js --port 3901",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview"
   },
@@ -51,7 +51,6 @@
     "@vitejs/plugin-react": "^6.0.3",
     "jsdom": "^29.1.1",
     "json-server": "0.17.4",
-    "json-server-auth": "^2.1.0",
     "prettier": "^3.9.4",
     "sass": "^1.101.0",
     "typescript": "^6.0.3",

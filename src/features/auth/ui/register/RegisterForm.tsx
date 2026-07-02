@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, MinimalTextInput } from '@/shared/ui';
 import { HttpError } from '@/shared/api';
-import { registerSchema, type RegisterFormValues } from '../model/schema';
-import { useRegister } from '../model/useRegister';
+import { registerSchema, type RegisterFormValues } from '../../model/schema';
+import { useRegister } from '../../model/useRegister';
 import styles from './RegisterForm.module.sass';
 
 interface RegisterFormProps {

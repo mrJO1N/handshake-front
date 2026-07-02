@@ -1,5 +1,7 @@
 import { API_URL } from '@/shared/config/env';
 import { HttpError, type HttpClient, type RequestOptions } from './types';
+import { selectAccessToken } from '@/entities/session';
+import { store } from '@/app/store';
 
 const request = async <T>(
   method: string,
@@ -7,10 +9,12 @@ const request = async <T>(
   body?: unknown,
   options?: RequestOptions,
 ): Promise<T> => {
+  const token = selectAccessToken(store.getState());
   const response = await fetch(`${API_URL}${url}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...options?.headers,
     },
     body: body !== undefined ? JSON.stringify(body) : undefined,
