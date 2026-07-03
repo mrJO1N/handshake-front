@@ -9,6 +9,8 @@ $top-margins: 10vw
   background: $bg
   border-bottom: 3px solid $main-blue
   margin: 0 $top-margins
+  &.mobile
+    margin: 0
 
 .inner
   display: flex
@@ -16,7 +18,6 @@ $top-margins: 10vw
   align-items: center
 
 .logo
-  // margin-left: 4vw
   margin: 0 4vw
   color: $main-blue
   font-family: $main-font-italic
@@ -26,6 +27,8 @@ $top-margins: 10vw
   line-height: 180%
   letter-spacing: 0
   text-decoration: none
+  &.mobile
+    font-size: 2.5rem
 
 .nav
   display: flex

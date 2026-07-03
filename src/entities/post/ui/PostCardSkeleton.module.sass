@@ -1,12 +1,10 @@
 @use '@/shared/config/styles/variables' as *
 
 @keyframes shimmer
-  0%
+  0%, 100%
     opacity: 0.5
   50%
     opacity: 1
-  100%
-    opacity: 0.5
 
 .skeleton
   border: 2px solid $dark-blue
@@ -16,6 +14,8 @@
   background: $component-bg
   box-shadow: $bottom-shadow
   animation: shimmer 1.5s ease-in-out infinite
+  &.mobile
+    width: 90vw
 
 .header
   border-bottom: 1px solid $dark-blue

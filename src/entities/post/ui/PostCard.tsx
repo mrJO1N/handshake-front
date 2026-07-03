@@ -1,6 +1,8 @@
 import { type FC } from 'react';
 import type { IPostContent } from '../model/types';
 import styles from './PostCard.module.sass';
+import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
+import clsx from 'clsx';
 
 interface IPostProps {
   id?: string;
@@ -8,14 +10,16 @@ interface IPostProps {
 }
 
 export const PostCard: FC<IPostProps> = ({ id, content }) => {
+  const isMobile = useIsMobile();
+
   return (
-    <div className={styles.post}>
+    <div className={clsx(styles.post, isMobile && styles.mobile)}>
       <div className={styles.header}>
-        <span className={styles.title}>{content.title.toUpperCase()}</span>
+        <span className={clsx(styles.title, isMobile && styles.mobile)}>{content.title.toUpperCase()}</span>
         {content.author && (
           <>
             <div className={styles.separator} />
-            <span className={styles.postId}>автор: {content.author}</span>
+            <span className={clsx(styles.postId, isMobile && styles.mobile)}>автор: {content.author}</span>
           </>
         )}
       </div>

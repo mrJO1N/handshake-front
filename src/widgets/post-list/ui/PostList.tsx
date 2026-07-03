@@ -9,7 +9,8 @@ interface PostListProps {
 
 const SKELETON_COUNT = 5;
 
-export const PostList: FC<PostListProps> = ({ posts, isLoading }) => (
+export const PostList: FC<PostListProps> = ({ posts, isLoading }) => {
+    return (
     <div className={styles.posts}>
         {isLoading
             ? Array.from({ length: SKELETON_COUNT }, (_, i) => (
@@ -18,3 +19,4 @@ export const PostList: FC<PostListProps> = ({ posts, isLoading }) => (
             : posts.map((post, i) => <PostCard content={post} key={post.id ?? i} />)}
     </div>
 );
+}
