@@ -2,33 +2,28 @@ import { CreatePostModal } from '@/features/create-post';
 import { Button, Input } from '@/shared/ui';
 import { PostList } from '@/widgets/post-list';
 import { usePosts } from '@/entities/post';
-import React, { FC, useState } from 'react';
-import { useAppSelector } from '@/app/store/hooks';
+import { FC } from 'react';
 import { selectIsAuth } from '@/entities/session';
 import styles from './PostsPage.module.sass';
 import clsx from "clsx"
-import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
+import { useSelector } from 'react-redux';
+import { usePostsPageState } from '../model/usePostsPageState';
 
-export const PostsPageMobile: FC<{}> = ({ }) => {
-    const [isCreateOpen, setCreateOpen] = useState(false);
-    const [searchValue, setSearchValue] = useState('');
-    const [query, setQuery] = useState(''); //search
-    const isAuth = useAppSelector(selectIsAuth);
+export const PostsPageMobile: FC = () => {
+    const { query, searchValue, setSearchValue, handleSearch, isCreateOpen, setCreateOpen } = usePostsPageState()
 
-    const isMobile = useIsMobile();
+    const isAuth = useSelector(selectIsAuth);
 
     const { data: posts = [], isLoading, isError } = usePosts(query);
-
-    const handleSearch = () => setQuery(searchValue);
 
     return (
         <div className={styles.postList} >
             <div className={clsx(styles.filters, styles.mobile)}>
-                <Button className={isMobile ? styles.mobile : ""} variant="colored" onClick={() => setCreateOpen(true)} disabled={!isAuth} title={isAuth ? "создать пост" : "должен быть авторизован"}>
-                    {isMobile ? "+" : "Создать пост"}
+                <Button className={styles.mobile} variant="colored" onClick={() => setCreateOpen(true)} disabled={!isAuth} title={isAuth ? "создать пост" : "должен быть авторизован"}>
+                    +
                 </Button>
                 <Input
-                    className={isMobile ? styles.mobile : ""}
+                    className={styles.mobile}
                     variant="search"
                     placeholder="Поиск"
                     value={searchValue}

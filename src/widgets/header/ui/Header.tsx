@@ -1,4 +1,4 @@
-import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
+import { useIsMobile } from '@/shared/lib/hooks';
 import { HeaderMobile } from './Header.mobile';
 import { HeaderDesktop } from './Header.desktop';
 

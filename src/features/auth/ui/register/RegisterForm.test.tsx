@@ -5,7 +5,7 @@ import { RegisterForm } from './RegisterForm';
 import { useRegister } from '../../model/useRegister';
 import { HttpError } from '@/shared/api';
 
-vi.mock('@/shared/lib/hooks/useIsMobile', () => ({
+vi.mock('@/shared/lib/hooks', () => ({
   useIsMobile: () => false,
 }));
 

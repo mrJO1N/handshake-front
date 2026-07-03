@@ -1,24 +1,22 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/ui';
-import { useAppSelector } from '@/app/store/hooks';
 import { selectIsAuth, selectUser } from '@/entities/session';
 import { RegisterModal, LoginModal, LogoutButton } from '@/features/auth';
 import { useAuthModals } from '../model/useAuthModals';
 
 import styles from './Header.module.sass';
-import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
 import clsx from 'clsx';
+import { useSelector } from 'react-redux';
 
 export const HeaderMobile = () => {
-  const isAuth = useAppSelector(selectIsAuth);
-  const user = useAppSelector(selectUser);
-  const isMobile = useIsMobile()
+  const isAuth = useSelector(selectIsAuth);
+  const user = useSelector(selectUser);
   const { active, openLogin, openRegister, close } = useAuthModals();
 
   return (
-    <header className={clsx(styles.header, isMobile && styles.mobile)}>
+    <header className={clsx(styles.header, styles.mobile)}>
       <div className={styles.inner}>
-        <Link to="/" className={clsx(styles.logo, isMobile && styles.mobile)}>
+        <Link to="/" className={clsx(styles.logo, styles.mobile)}>
           ИПОРУКАМ
         </Link>
 
@@ -38,9 +36,9 @@ export const HeaderMobile = () => {
               >
                 Войти
               </Button>
-              {!isMobile && <Button onClick={openRegister}>
+              <Button onClick={openRegister}>
                 Регистрация
-              </Button>}
+              </Button>
             </>
 
           }

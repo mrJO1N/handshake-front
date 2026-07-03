@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useUserService } from './useUserService';
-import { useAppDispatch } from '@/app/store/hooks';
 import { setSession, clearSession } from '@/entities/session';
+import { useDispatch } from 'react-redux';
 
 export const useInitializeAuth = () => {
   const userService = useUserService();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
-  const { data: user, isError, isLoading } = useQuery({
+  const { data: user, isError } = useQuery({
     queryKey: ['auth', 'me'],
     queryFn: async () => {
       const token = userService.getToken();

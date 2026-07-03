@@ -7,6 +7,7 @@ import { vi } from 'vitest';
 import { sessionReducer } from '@/entities/session';
 import type { RootState } from '@/app/store';
 import { ServicesProvider, type Services } from '@/app/providers/ServicesProvider';
+import { MemoryRouter } from 'react-router-dom';
 
 export const createTestQueryClient = () =>
   new QueryClient({
@@ -19,7 +20,7 @@ export const createTestQueryClient = () =>
 export const createTestStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
     reducer: { session: sessionReducer },
-    preloadedState,
+    preloadedState: preloadedState as RootState | undefined,
   });
 
 export const createMockServices = (overrides: Partial<Services> = {}): Services => ({
@@ -48,11 +49,13 @@ interface ProvidersOptions {
 const makeWrapper = ({ store, queryClient, services }: Required<ProvidersOptions>) =>
   function Wrapper({ children }: { children: ReactNode }) {
     return (
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <ServicesProvider services={services}>{children}</ServicesProvider>
-        </QueryClientProvider>
-      </Provider>
+      <MemoryRouter>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <ServicesProvider services={services}>{children}</ServicesProvider>
+          </QueryClientProvider>
+        </Provider>
+      </MemoryRouter>
     );
   };
 

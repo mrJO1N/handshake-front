@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import type { IPostContent } from '../model/types';
 import styles from './PostCard.module.sass';
-import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
+import { useIsMobile } from '@/shared/lib/hooks';
 import clsx from 'clsx';
 
 interface IPostProps {
@@ -9,7 +9,7 @@ interface IPostProps {
   content: IPostContent;
 }
 
-export const PostCard: FC<IPostProps> = ({ id, content }) => {
+export const PostCard: FC<IPostProps> = ({ content }) => {
   const isMobile = useIsMobile();
 
   return (

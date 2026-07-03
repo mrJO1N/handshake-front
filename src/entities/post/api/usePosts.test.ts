@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { waitFor } from '@testing-library/react';
 import { usePosts } from './usePosts';
-import { createMockServices, renderHookWithProviders } from '@/shared/lib/test/renderWithProviders';
+import { createMockServices, renderHookWithProviders } from '@/app/test/renderWithProviders';
 import type { IPostContent } from '../model/types';
 
 const posts: IPostContent[] = [

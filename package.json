@@ -29,6 +29,7 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:ci": "yarn test:run",
     "mock": "cd backend-mock && JWT_SECRET=hello json-server db.json -m ./middleware.js --port 3901",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",

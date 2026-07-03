@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen } from '@testing-library/react';
 import { PostsPageDesktop } from './PostsPage.desktop';
 import { usePosts } from '@/entities/post';
-import { renderWithProviders, createTestStore } from '@/shared/lib/test/renderWithProviders';
+import { renderWithProviders, createTestStore } from '@/app/test/renderWithProviders';
 import type { IUser } from '@/entities/user';
 
 vi.mock('@/entities/post', async (importOriginal) => {

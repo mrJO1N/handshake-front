@@ -35,7 +35,7 @@ export const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
     }, CLOSE_ANIMATION_MS);
 
     return () => clearTimeout(closeTimeout.current);
-  }, [isOpen]);
+  }, [isOpen, mounted]);
 
   useEffect(() => {
     if (!mounted) return;

@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { waitFor } from '@testing-library/react';
 import { useLogout } from './useLogout';
-import { createMockServices, createTestStore, renderHookWithProviders } from '@/shared/lib/test/renderWithProviders';
+import { createMockServices, createTestStore, renderHookWithProviders } from '@/app/test/renderWithProviders';
 import type { IUser } from '@/entities/user';
 
 const user: IUser = { id: '1', email: 'user@example.com', username: 'user' };

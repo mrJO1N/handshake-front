@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { waitFor } from '@testing-library/react';
 import { useLogin } from './useLogin';
-import { createMockServices, renderHookWithProviders } from '@/shared/lib/test/renderWithProviders';
+import { createMockServices, renderHookWithProviders } from '@/app/test/renderWithProviders';
 import type { AuthResponse, LoginDto } from '@/entities/user';
 
 const dto: LoginDto = { email: 'user@example.com', password: 'secret1' };

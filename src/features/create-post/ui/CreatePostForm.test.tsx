@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CreatePostForm } from './CreatePostForm';
 import { useCreatePost } from '@/entities/post';
-import { useAppSelector } from '@/app/store/hooks';
+import { useSelector } from 'react-redux'; 
 import { HttpError } from '@/shared/api';
 import type { IUser } from '@/entities/user';
 
@@ -12,21 +12,21 @@ vi.mock('@/entities/post', async (importOriginal) => {
   return { ...actual, useCreatePost: vi.fn() };
 });
 
-vi.mock('@/app/store/hooks', () => ({
-  useAppSelector: vi.fn(),
-  useAppDispatch: vi.fn(),
-}));
+vi.mock('react-redux', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('react-redux')>();
+  return { ...actual, useSelector: vi.fn() };
+});
 
 const mockedUseCreatePost = vi.mocked(useCreatePost);
-const mockedUseAppSelector = vi.mocked(useAppSelector);
+const mockedUseSelector = vi.mocked(useSelector);
 
 const user: IUser = { id: '1', email: 'user@example.com', username: 'alice' };
 
 describe('CreatePostForm', () => {
   beforeEach(() => {
     mockedUseCreatePost.mockReset();
-    mockedUseAppSelector.mockReset();
-    mockedUseAppSelector.mockReturnValue(user);
+    mockedUseSelector.mockReset();
+    mockedUseSelector.mockReturnValue(user);
   });
 
   it('should show validation errors and not call the mutation when fields are empty', async () => {
@@ -102,7 +102,7 @@ describe('CreatePostForm', () => {
   });
 
   it('should not call the mutation on submit when there is no authenticated user', async () => {
-    mockedUseAppSelector.mockReturnValue(null);
+    mockedUseSelector.mockReturnValue(null);
     const mutateAsync = vi.fn().mockResolvedValue(undefined);
     mockedUseCreatePost.mockReturnValue({ mutateAsync, isPending: false } as unknown as ReturnType<
       typeof useCreatePost

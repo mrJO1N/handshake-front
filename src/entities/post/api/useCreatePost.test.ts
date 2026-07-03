@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { waitFor } from '@testing-library/react';
 import { useCreatePost } from './useCreatePost';
-import { createMockServices, createTestQueryClient, renderHookWithProviders } from '@/shared/lib/test/renderWithProviders';
+import { createMockServices, createTestQueryClient, renderHookWithProviders } from '@/app/test/renderWithProviders';
 import type { CreatePostDto, IPostContent } from '../model/types';
 
 const dto: CreatePostDto = {

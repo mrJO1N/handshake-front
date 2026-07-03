@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.path.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "noImplicitAny": true,
     "module": "ESNext",
     "target": "ES2020",

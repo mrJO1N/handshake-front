@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/ui';
-import { useAppSelector } from '@/app/store/hooks';
 import { selectIsAuth, selectUser } from '@/entities/session';
 import { RegisterModal, LoginModal, LogoutButton } from '@/features/auth';
 import { useAuthModals } from '../model/useAuthModals';
 
 import styles from './Header.module.sass';
+import { useSelector } from 'react-redux';
 
 export const HeaderDesktop = () => {
-  const isAuth = useAppSelector(selectIsAuth);
-  const user = useAppSelector(selectUser);
+  const isAuth = useSelector(selectIsAuth);
+  const user = useSelector(selectUser);
   const { active, openLogin, openRegister, close } = useAuthModals();
 
   return (

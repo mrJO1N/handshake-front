@@ -2,7 +2,7 @@ import { Modal, type ModalProps } from '@/shared/ui';
 import { RegisterForm } from './RegisterForm';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
+import { useIsMobile } from '@/shared/lib/hooks';
 
 type RegisterModalProps = Pick<ModalProps, 'isOpen' | 'onClose'> & {
   onSwitchToLogin: () => void;

@@ -1,4 +1,3 @@
-// src/shared/lib/hooks/useIsMobile.ts
 import { MOBILE_BREAKPOINT_PX } from '@/shared/config/env';
 import { useEffect, useState } from 'react';
 

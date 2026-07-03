@@ -1,4 +1,4 @@
-import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
+import { useIsMobile } from '@/shared/lib/hooks';
 import { PostsPageMobile } from './PostsPage.mobile';
 import { PostsPageDesktop } from './PostsPage.desktop';
 

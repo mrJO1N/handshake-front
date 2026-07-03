@@ -1,7 +1,11 @@
 import { API_URL } from '@/shared/config/env';
 import { HttpError, type HttpClient, type RequestOptions } from './types';
-import { selectAccessToken } from '@/entities/session';
-import { store } from '@/app/store';
+
+let getAccessToken: () => string | null = () => null;
+
+export const setAccessTokenProvider = (fn: () => string | null) => {
+  getAccessToken = fn;
+};
 
 const request = async <T>(
   method: string,
@@ -9,7 +13,7 @@ const request = async <T>(
   body?: unknown,
   options?: RequestOptions,
 ): Promise<T> => {
-  const token = selectAccessToken(store.getState());
+  const token = getAccessToken();
   const response = await fetch(`${API_URL}${url}`, {
     method,
     headers: {
@@ -26,9 +30,8 @@ const request = async <T>(
   let data
   try {
     data = text ? JSON.parse(text) : null;
-  } catch (err) {
+  } catch {
     throw new HttpError(response.status, "not a json", data);
-
   }
 
   if (!response.ok) {

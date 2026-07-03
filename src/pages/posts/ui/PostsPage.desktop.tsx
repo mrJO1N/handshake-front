@@ -2,20 +2,17 @@ import { CreatePostModal } from '@/features/create-post';
 import { Button, Input } from '@/shared/ui';
 import { PostList } from '@/widgets/post-list';
 import { usePosts } from '@/entities/post';
-import { useState } from 'react';
-import { useAppSelector } from '@/app/store/hooks';
 import { selectIsAuth } from '@/entities/session';
 import styles from './PostsPage.module.sass';
+import { useSelector } from 'react-redux';
+import { usePostsPageState } from '../model/usePostsPageState';
 
 export const PostsPageDesktop = () => {
-  const [isCreateOpen, setCreateOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [query, setQuery] = useState(''); //search
-  const isAuth = useAppSelector(selectIsAuth);
+  const { query, searchValue, setSearchValue, handleSearch, isCreateOpen, setCreateOpen } = usePostsPageState()
+
+  const isAuth = useSelector(selectIsAuth);
 
   const { data: posts = [], isLoading, isError } = usePosts(query);
-
-  const handleSearch = () => setQuery(searchValue);
 
   return (
     <div className={styles.postList}>

@@ -1,40 +1,15 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, MinimalTextInput } from '@/shared/ui';
-import { HttpError } from '@/shared/api';
-import { loginSchema, type LoginFormValues } from '../../model/schema';
-import { useLogin } from '../../model/useLogin';
 import styles from '../AuthForm.module.sass';
 import { FC } from 'react';
-import { LoginFormProps } from '../../types';
+import { LoginFormProps } from '../../formProps';
+import { useLoginForm } from '../../model/useLoginForm';
 
 
 export const LoginFormDesktop: FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) => {
-    const {
-        register,
-        handleSubmit,
-        setError,
-        formState: { errors },
-    } = useForm<LoginFormValues>({
-        resolver: zodResolver(loginSchema),
-    });
-    const { mutateAsync, isPending } = useLogin();
-
-    const onSubmit = async (values: LoginFormValues) => {
-        try {
-            await mutateAsync(values);
-            onSuccess();
-        } catch (error) {
-            if (error instanceof HttpError && error.status === 400) {
-                setError('root', { message: 'Неверный email или пароль' });
-            } else {
-                setError('root', { message: 'Не удалось войти. Попробуйте ещё раз' });
-            }
-        }
-    };
+   const { register, onSubmit, formState: { errors }, isPending } = useLoginForm(onSuccess);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form onSubmit={onSubmit} noValidate>
             <div>
                 <MinimalTextInput
                     type="email"

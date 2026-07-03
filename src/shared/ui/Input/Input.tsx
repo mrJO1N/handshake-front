@@ -1,6 +1,6 @@
 import { forwardRef, useState, type InputHTMLAttributes } from 'react';
 import styles from './Input.module.sass';
-import { preventClipboard } from '@/features/auth/lib/formFunctions';
+import { preventClipboard } from '@/shared/lib/formFunctions';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     variant?: 'default' | 'search';

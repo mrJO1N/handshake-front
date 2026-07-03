@@ -1,11 +1,11 @@
-import { useAppDispatch } from '@/app/store/hooks';
 import { clearSession } from '@/entities/session';
 import { useUserService } from '@/entities/user';
 import { useMutation } from '@tanstack/react-query';
+import { useDispatch } from 'react-redux';
 
 export const useLogout = () => {
     const userService = useUserService();
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
 
     return useMutation({
         mutationFn: async () => { },

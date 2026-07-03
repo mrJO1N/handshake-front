@@ -1,4 +1,4 @@
-import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
+import { useIsMobile } from '@/shared/lib/hooks';
 import styles from './PostCardSkeleton.module.sass';
 import clsx from 'clsx';
 

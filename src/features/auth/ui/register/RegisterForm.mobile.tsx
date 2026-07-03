@@ -1,41 +1,14 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, MinimalTextInput } from '@/shared/ui';
-import { HttpError } from '@/shared/api';
-import { registerSchema, type RegisterFormValues } from '../../model/schema';
-import { useRegister } from '../../model/useRegister';
+import { Button, Input } from '@/shared/ui';
 import styles from '../AuthForm.module.sass';
 import { FC } from 'react';
-import { RegisterFormProps } from '../../types';
-
+import { RegisterFormProps } from '../../formProps';
+import { useRegisterForm } from '../../model/useRegisterForm';
 
 export const RegisterFormMobile: FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin }) => {
-    const {
-        register,
-        handleSubmit,
-        setError,
-        formState: { errors },
-    } = useForm<RegisterFormValues>({
-        resolver: zodResolver(registerSchema),
-    });
-    const { mutateAsync, isPending } = useRegister();
-
-    const onSubmit = async (values: RegisterFormValues) => {
-        const { passwordConfirm, ...dto } = values;
-        try {
-            await mutateAsync(dto);
-            onSuccess();
-        } catch (error) {
-            if (error instanceof HttpError && error.status === 409) {
-                setError('root', { message: 'Email уже занят' });
-            } else {
-                setError('root', { message: 'Не удалось зарегистрироваться. Попробуйте ещё раз' });
-            }
-        }
-    };
+    const { register, onSubmit, formState: { errors }, isPending } = useRegisterForm(onSuccess);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate className={styles.mobile}>
+        <form onSubmit={onSubmit} noValidate className={styles.mobile}>
             <div>
                 <Input type="email" placeholder="Email" {...register('email')} />
                 {errors.email && <span className={styles.error}>{errors.email.message}</span>}

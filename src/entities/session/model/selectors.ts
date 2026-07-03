@@ -1,5 +1,9 @@
-import type { RootState } from '@/app/store';
+import type { SessionState } from './sessionSlice';
 
-export const selectUser = (s: RootState) => s.session.user;
-export const selectAccessToken = (s: RootState) => s.session.accessToken;
-export const selectIsAuth = (s: RootState) => Boolean(s.session.accessToken);
+interface SessionRootState {
+  session: SessionState;
+}
+
+export const selectUser = (s: SessionRootState) => s.session.user;
+export const selectAccessToken = (s: SessionRootState) => s.session.accessToken;
+export const selectIsAuth = (s: SessionRootState) => Boolean(s.session.accessToken);

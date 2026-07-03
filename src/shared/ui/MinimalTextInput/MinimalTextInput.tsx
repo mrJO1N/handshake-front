@@ -1,55 +1,49 @@
-import { forwardRef, useState, type InputHTMLAttributes, type Ref, type TextareaHTMLAttributes, type ReactElement } from 'react';
+import { forwardRef, useState, type InputHTMLAttributes, type Ref, type TextareaHTMLAttributes } from 'react';
 import styles from './MinimalTextInput.module.sass';
-import { preventClipboard } from '@/features/auth/lib/formFunctions';
+import { preventClipboard } from '@/shared/lib/formFunctions';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-    variant?: "row"
-}
-
+    variant?: 'row';
+};
 type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
-    variant: "textarea"
-}
+    variant: 'textarea';
+};
+type MinimalTextInputProps = InputProps | TextareaProps;
 
-type MinimalTextInputProps = InputProps | TextareaProps
-
-// Type overloads
-function MinimalTextInputf(
-    props: TextareaProps,
-    ref: Ref<HTMLTextAreaElement>
-): ReactElement;
-
-function MinimalTextInputf(
-    props: InputProps,
-    ref: Ref<HTMLInputElement>
-): ReactElement;
-
-// Implementation
-function MinimalTextInputf(
-    { variant = 'row', className = '', ...rest }: MinimalTextInputProps,
-    ref: Ref<HTMLInputElement | HTMLTextAreaElement>
-) {
-    const isPassword = variant === 'row' && 'type' in rest && rest.type === 'password';
+export const MinimalTextInput = forwardRef<
+    HTMLInputElement | HTMLTextAreaElement,
+    MinimalTextInputProps
+>(({ variant = 'row', className = '', ...rest }, ref) => {
     const [isVisible, setIsVisible] = useState(false);
 
-    return (
-        <div className={[styles.minimalTextInput, className].filter(Boolean).join(' ')}>
-            {variant === 'row' ? (
-                <input
-                    {...(rest as InputHTMLAttributes<HTMLInputElement>)}
-                    type={isPassword ? (isVisible ? 'text' : 'password') : (rest as any).type}
-                    ref={ref as Ref<HTMLInputElement>}
-                    {...(isPassword && {
-                        onCopy: preventClipboard,
-                        onPaste: preventClipboard,
-                        onCut: preventClipboard,
-                    })}
-                />
-            ) : (
+    const wrapperClass = [styles.minimalTextInput, className].filter(Boolean).join(' ');
+
+    if (variant === 'textarea') {
+        return (
+            <div className={wrapperClass}>
                 <textarea
                     {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
                     ref={ref as Ref<HTMLTextAreaElement>}
                 />
-            )}
+            </div>
+        );
+    }
+
+    const inputProps = rest as InputHTMLAttributes<HTMLInputElement>;
+    const isPassword = inputProps.type === 'password';
+
+    return (
+        <div className={wrapperClass}>
+            <input
+                {...inputProps}
+                type={isPassword ? (isVisible ? 'text' : 'password') : inputProps.type}
+                ref={ref as Ref<HTMLInputElement>}
+                {...(isPassword && {
+                    onCopy: preventClipboard,
+                    onPaste: preventClipboard,
+                    onCut: preventClipboard,
+                })}
+            />
             {isPassword && (
                 <button
                     type="button"
@@ -61,7 +55,6 @@ function MinimalTextInputf(
             )}
         </div>
     );
-}
+});
 
-export const MinimalTextInput = forwardRef(MinimalTextInputf);
 MinimalTextInput.displayName = 'MinimalTextInput';

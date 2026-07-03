@@ -1,11 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import { HeaderMobile } from './Header.mobile';
-import { renderWithProviders, createTestStore } from '@/shared/lib/test/renderWithProviders';
+import { renderWithProviders, createTestStore } from '@/app/test/renderWithProviders';
 import type { IUser } from '@/entities/user';
 
-vi.mock('@/shared/lib/hooks/useIsMobile', () => ({
+vi.mock('@/shared/lib/hooks', () => ({
   useIsMobile: () => false,
 }));
 
@@ -13,9 +12,7 @@ const user: IUser = { id: '1', email: 'user@example.com', username: 'alice' };
 
 const renderHeader = (session: { user: IUser | null; accessToken: string | null }) =>
   renderWithProviders(
-    <MemoryRouter>
-      <HeaderMobile />
-    </MemoryRouter>,
+    <HeaderMobile />,
     { store: createTestStore({ session }) },
   );
 

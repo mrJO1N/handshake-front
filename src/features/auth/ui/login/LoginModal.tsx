@@ -1,6 +1,6 @@
 import { Modal, type ModalProps } from '@/shared/ui';
 import { LoginForm } from './LoginForm';
-import { useIsMobile } from '@/shared/lib/hooks/useIsMobile';
+import { useIsMobile } from '@/shared/lib/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 

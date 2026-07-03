@@ -1,8 +1,7 @@
-import { LoginForm } from "@/features/auth/ui/login/LoginForm";
-import { RegisterForm } from "@/features/auth/ui/register/RegisterForm";
-import { useIsMobile } from "@/shared/lib/hooks/useIsMobile";
+import { LoginForm, RegisterForm } from "@/features/auth";
+import { useIsMobile } from "@/shared/lib/hooks";
 import { FC, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface AuthPageProps {
     variant: "login" | "register"

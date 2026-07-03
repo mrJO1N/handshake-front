@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { ServicesProvider, useServicesContext } from './ServicesProvider';
-import { createMockServices } from '@/shared/lib/test/renderWithProviders';
+import { createMockServices } from '@/app/test/renderWithProviders';
 
 describe('useServicesContext', () => {
   it('should throw when used outside of a ServicesProvider', () => {

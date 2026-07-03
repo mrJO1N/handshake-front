@@ -5,7 +5,7 @@ import { LoginForm } from './LoginForm';
 import { useLogin } from '../../model/useLogin';
 import { HttpError } from '@/shared/api';
 
-vi.mock('@/shared/lib/hooks/useIsMobile', () => ({
+vi.mock('@/shared/lib/hooks', () => ({
   useIsMobile: () => false,
 }));
 
