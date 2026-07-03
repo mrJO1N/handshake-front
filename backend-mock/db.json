@@ -23,20 +23,30 @@
       "author": "joe",
       "createdAt": "2026-07-02T18:49:02.577Z",
       "id": 3
-    }, {
+    },
+    {
       "title": "первый",
       "theUserWants": "хочу",
       "theUserOffers": "дам",
       "author": "joe",
       "createdAt": "2026-07-02T18:49:02.577Z",
       "id": 4
-    }, {
+    },
+    {
       "title": "первый 5",
       "theUserWants": "хочу",
       "theUserOffers": "дам",
       "author": "joe10",
       "createdAt": "2026-07-02T18:49:02.577Z",
       "id": 5
+    },
+    {
+      "title": "joe-title",
+      "theUserOffers": "joe-offers",
+      "theUserWants": "joe-wants-",
+      "author": "joe",
+      "createdAt": "2026-07-03T09:12:36.929Z",
+      "id": 6
     }
   ],
   "users": [

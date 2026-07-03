@@ -32,7 +32,6 @@ export const CreatePostForm = ({ onSuccess }: CreatePostFormProps) => {
   });
 
   const onSubmit = async (values: CreatePostFormValues) => {
-    e.preventDefault();
     if (!user) return;
 
     try {
@@ -44,7 +43,7 @@ export const CreatePostForm = ({ onSuccess }: CreatePostFormProps) => {
       onSuccess();
     } catch (err) {
       if (err instanceof HttpError && err.status === 400) {
-        setError('root', { message: 'Неверный email или пароль' });
+        setError('root', { message: 'Проверьте введённые данные и попробуйте снова' });
       } else {
         setError('root', { message: 'Не удалось создать пост. Попробуйте ещё раз' });
       }
@@ -76,6 +75,7 @@ export const CreatePostForm = ({ onSuccess }: CreatePostFormProps) => {
         />
         {errors.theUserOffers && <span className={styles.error}>{errors.theUserOffers.message}</span>}
       </div>
+      {errors.root && <span className={styles.error}>{errors.root.message}</span>}
       <Button variant="colored" type="submit" disabled={isPending}>
         {isPending ? 'Создаём…' : 'Создать'}
       </Button>

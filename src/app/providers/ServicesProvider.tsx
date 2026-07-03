@@ -3,7 +3,7 @@ import { httpClient } from '@/shared/api';
 import { createUserService, type UserService } from '@/entities/user';
 import { createPostService, type PostService } from '@/entities/post';
 
-interface Services {
+export interface Services {
   userService: UserService;
   postService: PostService;
 }
@@ -17,13 +17,20 @@ export const useServicesContext = () => {
   return ctx;
 };
 
-export const ServicesProvider = ({ children }: { children: ReactNode }) => {
+interface ServicesProviderProps {
+  children: ReactNode;
+  // позволяет подменить сервисы в тестах (DI), в проде не передаётся
+  services?: Services;
+}
+
+export const ServicesProvider = ({ children, services: servicesOverride }: ServicesProviderProps) => {
   const services = useMemo<Services>(
-    () => ({
-      userService: createUserService(httpClient),
-      postService: createPostService(httpClient),
-    }),
-    [],
+    () =>
+      servicesOverride ?? {
+        userService: createUserService(httpClient),
+        postService: createPostService(httpClient),
+      },
+    [servicesOverride],
   );
 
   return (

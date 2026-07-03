@@ -12,7 +12,6 @@ export const useRegister = () => {
     mutationFn: async (dto: RegisterDto) => userService.register(dto),
     onSuccess: ({ user, accessToken }) => {
       userService.saveToken(accessToken)
-      console.log("hello", user, accessToken)
       dispatch(setSession({ user, accessToken })); // token to Redux
     },
   });
