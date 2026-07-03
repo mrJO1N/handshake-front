@@ -7,11 +7,13 @@ import { useAuthModals } from '../model/useAuthModals';
 import styles from './Header.module.sass';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
+import { useIsMobile } from '@/shared/lib/hooks';
 
 export const HeaderMobile = () => {
   const isAuth = useSelector(selectIsAuth);
   const user = useSelector(selectUser);
   const { active, openLogin, openRegister, close } = useAuthModals();
+  const isMobile = useIsMobile()
 
   return (
     <header className={clsx(styles.header, styles.mobile)}>
@@ -36,9 +38,11 @@ export const HeaderMobile = () => {
               >
                 Войти
               </Button>
-              <Button onClick={openRegister}>
-                Регистрация
-              </Button>
+              {
+                isMobile && <Button onClick={openRegister}>
+                  Регистрация
+                </Button>
+              }
             </>
 
           }

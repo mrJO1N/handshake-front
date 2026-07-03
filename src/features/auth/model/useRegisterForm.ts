@@ -12,7 +12,7 @@ export const useRegisterForm = (onSuccess: () => void) => {
 
     const onSubmit = form.handleSubmit(async (values: RegisterFormValues) => {
         // because it is just cleaning
-        // @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { passwordConfirm: _, ...dto } = values;
         try {
             await mutateAsync(dto);
