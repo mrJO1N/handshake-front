@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/ui';
 import { selectIsAuth, selectUser } from '@/entities/session';
-import { LogoutButton } from '@/features/auth';
 
 import styles from './Header.module.sass';
 import clsx from 'clsx';
@@ -22,10 +21,9 @@ export const HeaderMobile = () => {
         <div className={styles.actions}>
           {isAuth && user
             ? <>
-              <span className={styles.username}>
+              <button className={styles.username} onClick={() => navigate("/users/me")}>
                 @{user.username}
-              </span>
-              <LogoutButton />
+              </button>
             </>
             :
             <>

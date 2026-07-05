@@ -1,5 +1,6 @@
 import { LoginForm, RegisterForm } from "@/features/auth";
 import { CreatePostForm } from "@/features/create-post";
+import { UserSettingsForm } from "@/features/user-settings";
 import { useModal } from "../model/useModal";
 import { selectModalActive, MODAL_TITLES, ModalType } from "@/entities/modal";
 import { useSelector } from "react-redux";
@@ -12,6 +13,7 @@ const MODAL_ROUTES: Record<Exclude<ModalType, null>, string> = {
     login: "/login",
     register: "/register",
     createPost: "/posts/create",
+    user: "/users/me",
 };
 
 export const ModalRoot = () => {
@@ -39,6 +41,10 @@ export const ModalRoot = () => {
 
         <Modal isOpen={active === "createPost"} onClose={close} title={MODAL_TITLES.createPost}>
             <CreatePostForm onSuccess={close} />
+        </Modal>
+
+        <Modal isOpen={active === "user"} onClose={close} title={MODAL_TITLES.user}>
+            <UserSettingsForm onDeleted={() => { close(); navigate("/"); }} />
         </Modal>
     </>
 };

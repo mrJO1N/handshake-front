@@ -134,6 +134,151 @@ module.exports = (req, res, next) => {
         return;
     }
 
+    // PATCH /me - обновить профиль (username/email)
+    if (req.method === 'PATCH' && req.path === '/me') {
+        const authHeader = req.get('authorization');
+
+        if (!authHeader) {
+            res.status(401).jsonp({ message: 'Missing authorization header' });
+            return;
+        }
+
+        const token = authHeader.split(' ')[1];
+
+        if (!token) {
+            res.status(401).jsonp({ message: 'Invalid authorization header' });
+            return;
+        }
+
+        const db = req.app.db;
+
+        try {
+            const decoded = jwt.verify(token, JWT_SECRET);
+            const users = db.get('users').value();
+            const user = users.find(u => u.id === decoded.sub);
+
+            if (!user) {
+                res.status(401).jsonp({ message: 'User not found' });
+                return;
+            }
+
+            const { username, email } = req.body;
+
+            if (username && username !== user.username) {
+                const existingUser = users.find(u => u.username === username);
+                if (existingUser) {
+                    res.status(409).jsonp({ message: 'User already exists' });
+                    return;
+                }
+            }
+
+            const updates = {};
+            if (username) updates.username = username;
+            if (email) updates.email = email;
+
+            db.get('users').find({ id: user.id }).assign(updates).write();
+
+            const updatedUser = db.get('users').find({ id: user.id }).value();
+            const { password: _, ...userWithoutPassword } = updatedUser;
+            res.jsonp(userWithoutPassword);
+        } catch (error) {
+            console.error(error)
+            res.status(401).jsonp({ message: 'Invalid token', error: error.message });
+        }
+
+        return;
+    }
+
+    // PATCH /me/password - изменить пароль
+    if (req.method === 'PATCH' && req.path === '/me/password') {
+        const authHeader = req.get('authorization');
+
+        if (!authHeader) {
+            res.status(401).jsonp({ message: 'Missing authorization header' });
+            return;
+        }
+
+        const token = authHeader.split(' ')[1];
+
+        if (!token) {
+            res.status(401).jsonp({ message: 'Invalid authorization header' });
+            return;
+        }
+
+        const db = req.app.db;
+
+        try {
+            const decoded = jwt.verify(token, JWT_SECRET);
+            const user = db.get('users').find({ id: decoded.sub }).value();
+
+            if (!user) {
+                res.status(401).jsonp({ message: 'User not found' });
+                return;
+            }
+
+            const { currentPassword, newPassword } = req.body;
+
+            if (!currentPassword || !newPassword) {
+                res.status(400).jsonp({ message: 'Missing currentPassword or newPassword' });
+                return;
+            }
+
+            if (currentPassword !== user.password) {
+                res.status(401).jsonp({ message: 'Invalid current password' });
+                return;
+            }
+
+            db.get('users').find({ id: user.id }).assign({ password: newPassword }).write();
+
+            const updatedUser = db.get('users').find({ id: user.id }).value();
+            const { password: _, ...userWithoutPassword } = updatedUser;
+            res.jsonp(userWithoutPassword);
+        } catch (error) {
+            console.error(error)
+            res.status(401).jsonp({ message: 'Invalid token', error: error.message });
+        }
+
+        return;
+    }
+
+    // DELETE /me - удалить аккаунт
+    if (req.method === 'DELETE' && req.path === '/me') {
+        const authHeader = req.get('authorization');
+
+        if (!authHeader) {
+            res.status(401).jsonp({ message: 'Missing authorization header' });
+            return;
+        }
+
+        const token = authHeader.split(' ')[1];
+
+        if (!token) {
+            res.status(401).jsonp({ message: 'Invalid authorization header' });
+            return;
+        }
+
+        const db = req.app.db;
+
+        try {
+            const decoded = jwt.verify(token, JWT_SECRET);
+            const user = db.get('users').find({ id: decoded.sub }).value();
+
+            if (!user) {
+                res.status(401).jsonp({ message: 'User not found' });
+                return;
+            }
+
+            db.get('users').remove({ id: user.id }).write();
+
+            res.status(204).end();
+        } catch (error) {
+            console.error(error)
+            res.status(401).jsonp({ message: 'Invalid token', error: error.message });
+        }
+
+        return;
+    }
+
     // GET /posts/by-author/:username - получить посты автора
     if (req.method === 'GET' && req.path.startsWith('/posts/by-author/')) {
         const username = req.path.replace('/posts/by-author/', '');

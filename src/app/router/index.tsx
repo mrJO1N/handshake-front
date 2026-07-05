@@ -4,6 +4,7 @@ import { HomePage } from '@/pages/home';
 import { PostsPage } from '@/pages/posts';
 import { AuthPage } from '@/pages/auth';
 import { CreatePostPage } from '@/pages/create-post';
+import { UserPage } from '@/pages/user';
 import { selectIsAuth } from '@/entities/session';
 import { useSelector } from 'react-redux';
 import { ModalRoot } from '@/widgets/modal-root';
@@ -22,7 +23,8 @@ export const useRouter = () => {
 
   // private routes
   const privateRoutes = [
-    { path: "/posts/create", element: <CreatePostPage />, }
+    { path: "/posts/create", element: <CreatePostPage />, },
+    { path: "/users/me", element: <UserPage />, }
   ]
 
   if (isAuth) routes.push(...privateRoutes)

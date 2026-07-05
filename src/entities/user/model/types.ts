@@ -20,3 +20,13 @@ export interface AuthResponse {
   user: IUser;
 }
 
+export interface UpdateProfileDto {
+  email?: string;
+  username?: string;
+}
+
+export interface ChangePasswordDto {
+  currentPassword: string;
+  newPassword: string;
+}
+

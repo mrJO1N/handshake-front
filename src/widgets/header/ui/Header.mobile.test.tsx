@@ -22,14 +22,12 @@ describe('HeaderMobile', () => {
 
     expect(screen.getByRole('button', { name: 'Войти' })).toBeInTheDocument();
     expect(screen.queryByText('@alice')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'выйти' })).not.toBeInTheDocument();
   });
 
-  it('shows the username and logout button and hides auth buttons when authenticated', () => {
+  it('shows the username and hides auth buttons when authenticated', () => {
     renderHeader({ user, accessToken: 'token' });
 
-    expect(screen.getByText('@alice')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'выйти' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '@alice' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Войти' })).not.toBeInTheDocument();
   });
 });

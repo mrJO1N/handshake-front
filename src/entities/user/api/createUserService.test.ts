@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createUserService } from './createUserService';
 import type { HttpClient } from '@/shared/api';
-import type { LoginDto, RegisterDto } from '../model/types';
+import type { ChangePasswordDto, LoginDto, RegisterDto, UpdateProfileDto } from '../model/types';
 
 const createMockHttp = (): HttpClient => ({
   get: vi.fn(),
@@ -63,5 +63,34 @@ describe('createUserService', () => {
     const service = createUserService(createMockHttp());
     service.clearToken();
     expect(localStorage.getItem('authToken')).toBeNull();
+  });
+
+  it('updateProfile should call PATCH /me with the dto', () => {
+    const http = createMockHttp();
+    const service = createUserService(http);
+    const dto: UpdateProfileDto = { email: 'new@example.com', username: 'newname' };
+
+    service.updateProfile(dto);
+
+    expect(http.patch).toHaveBeenCalledWith('/me', dto);
+  });
+
+  it('changePassword should call PATCH /me/password with the dto', () => {
+    const http = createMockHttp();
+    const service = createUserService(http);
+    const dto: ChangePasswordDto = { currentPassword: 'old-secret', newPassword: 'new-secret' };
+
+    service.changePassword(dto);
+
+    expect(http.patch).toHaveBeenCalledWith('/me/password', dto);
+  });
+
+  it('deleteAccount should call DELETE /me', () => {
+    const http = createMockHttp();
+    const service = createUserService(http);
+
+    service.deleteAccount();
+
+    expect(http.delete).toHaveBeenCalledWith('/me');
   });
 });

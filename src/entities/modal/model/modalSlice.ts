@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type ModalType = 'login' | 'register' | 'createPost' | null;
+export type ModalType = 'login' | 'register' | 'createPost' | 'user' | null;
 
 export interface ModalState {
     active: ModalType;
