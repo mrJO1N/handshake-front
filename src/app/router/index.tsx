@@ -6,6 +6,8 @@ import { AuthPage } from '@/pages/auth';
 import { CreatePostPage } from '@/pages/create-post';
 import { selectIsAuth } from '@/entities/session';
 import { useSelector } from 'react-redux';
+import { FC } from 'react';
+import { ModalRoot } from '@/widgets/modal-root';
 
 export const useRouter = () => {
   const isAuth = useSelector(selectIsAuth)
@@ -28,7 +30,10 @@ export const useRouter = () => {
 
   return createBrowserRouter([
     {
-      element: <RootLayout />,
+      element: <>
+        <RootLayout />
+        <ModalRoot />
+      </>,
       children: routes,
     },
   ]);

@@ -1,4 +1,3 @@
-import { CreatePostModal } from '@/features/create-post';
 import { Button, Input } from '@/shared/ui';
 import { PostList } from '@/widgets/post-list';
 import { usePosts } from '@/entities/post';
@@ -8,9 +7,11 @@ import styles from './PostsPage.module.sass';
 import clsx from "clsx"
 import { useSelector } from 'react-redux';
 import { usePostsPageState } from '../model/usePostsPageState';
+import { useModal } from '@/widgets/modal-root';
 
 export const PostsPageMobile: FC = () => {
-    const { query, searchValue, setSearchValue, handleSearch, isCreateOpen, setCreateOpen } = usePostsPageState()
+    const { query, searchValue, setSearchValue, handleSearch } = usePostsPageState()
+    const { open } = useModal()
 
     const isAuth = useSelector(selectIsAuth);
 
@@ -19,7 +20,7 @@ export const PostsPageMobile: FC = () => {
     return (
         <div className={styles.postList} >
             <div className={clsx(styles.filters, styles.mobile)}>
-                <Button className={styles.mobile} variant="colored" onClick={() => setCreateOpen(true)} disabled={!isAuth} title={isAuth ? "создать пост" : "должен быть авторизован"}>
+                <Button className={styles.mobile} variant="colored" onClick={() => open("createPost")} disabled={!isAuth} title={isAuth ? "создать пост" : "должен быть авторизован"}>
                     +
                 </Button>
                 <Input
@@ -39,7 +40,6 @@ export const PostsPageMobile: FC = () => {
                 <PostList posts={posts} isLoading={isLoading} />
             )}
 
-            <CreatePostModal isOpen={isCreateOpen} onClose={() => setCreateOpen(false)} />
         </div>
     );
 };

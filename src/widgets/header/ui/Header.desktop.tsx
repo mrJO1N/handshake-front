@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/ui';
 import { selectIsAuth, selectUser } from '@/entities/session';
-import { RegisterModal, LoginModal, LogoutButton } from '@/features/auth';
-import { useAuthModals } from '../model/useAuthModals';
+import { LogoutButton } from '@/features/auth';
 
 import styles from './Header.module.sass';
 import { useSelector } from 'react-redux';
+import { ModalRoot } from '@/widgets/modal-root';
+import { useModal } from '@/widgets/modal-root/model/useModal';
 
 export const HeaderDesktop = () => {
   const isAuth = useSelector(selectIsAuth);
   const user = useSelector(selectUser);
-  const { active, openLogin, openRegister, close } = useAuthModals();
+  const { open } = useModal()
 
   return (
     <header className={styles.header}>
@@ -31,27 +32,17 @@ export const HeaderDesktop = () => {
             <>
               <Button
                 variant="clear"
-                onClick={openLogin}
+                onClick={() => open("login")}
               >
                 Вход
               </Button>
-              <Button onClick={openRegister}>
+              <Button onClick={() => open("register")}>
                 Регистрация
-              </Button></>
+              </Button>
+            </>
           }
         </div>
       </div>
-
-      <LoginModal
-        isOpen={active === 'login'}
-        onClose={close}
-        onSwitchToRegister={openRegister}
-      />
-      <RegisterModal
-        isOpen={active === 'register'}
-        onClose={close}
-        onSwitchToLogin={openLogin}
-      />
     </header>
   );
 };

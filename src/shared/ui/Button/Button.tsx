@@ -1,5 +1,6 @@
 import { FC, type ButtonHTMLAttributes } from 'react';
 import styles from './Button.module.sass';
+import clsx from 'clsx';
 
 type ButtonVariant = 'default' | 'colored' | 'clear';
 
@@ -16,9 +17,7 @@ export const Button: FC<IButtonProps> = ({
   return (
     <button
       {...rest}
-      className={[styles.button, styles[variant], className]
-        .filter(Boolean)
-        .join(' ')}
+      className={clsx(styles.button, styles[variant], className)}
     >
       {children}
     </button>

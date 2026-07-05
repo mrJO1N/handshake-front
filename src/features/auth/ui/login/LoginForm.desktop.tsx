@@ -1,22 +1,22 @@
-import { Button, MinimalTextInput } from '@/shared/ui';
-import styles from '../AuthForm.module.sass';
+import styles from './LoginForm.module.sass';
 import { FC } from 'react';
 import { LoginFormProps } from '../../formProps';
 import { useLoginForm } from '../../model/useLoginForm';
+import { Form, FormError, FormFooter, Button, MinimalTextInput } from '@/shared/ui';
 
 
 export const LoginFormDesktop: FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) => {
-   const { register, onSubmit, formState: { errors }, isPending } = useLoginForm(onSuccess);
+    const { register, onSubmit, formState: { errors }, isPending } = useLoginForm(onSuccess);
 
     return (
-        <form onSubmit={onSubmit} noValidate>
+        <Form onSubmit={onSubmit} noValidate>
             <div>
                 <MinimalTextInput
                     type="email"
                     placeholder="Email"
                     {...register('email')}
                 />
-                {errors.email && <span className={styles.error}>{errors.email.message}</span>}
+                {errors.email && <FormError>{errors.email.message}</FormError>}
             </div>
             <div>
                 <MinimalTextInput
@@ -24,19 +24,21 @@ export const LoginFormDesktop: FC<LoginFormProps> = ({ onSuccess, onSwitchToRegi
                     placeholder="Пароль"
                     {...register('password')}
                 />
-                {errors.password && <span className={styles.error}>{errors.password.message}</span>}
+                {errors.password && <FormError>{errors.password.message}</FormError>}
             </div>
-            {errors.root && <span className={styles.error}>{errors.root.message}</span>}
-            <Button className={styles.submit} variant="colored" type="submit" disabled={isPending}>
-                {isPending ? 'Вход…' : 'Войти'}
-            </Button>
+            {errors.root && <FormError>{errors.root.message}</FormError>}
 
-            <p className={styles.switch}>
-                Нет аккаунта?{' '}
-                <button type="button" className={styles.switchLink} onClick={onSwitchToRegister}>
-                    Регистрация
-                </button>
-            </p>
-        </form>
+            <FormFooter>
+                <Button className={styles.submit} variant="colored" type="submit" disabled={isPending}>
+                    {isPending ? 'Вход…' : 'Войти'}
+                </Button>
+                <p className={styles.switch}>
+                    Нет аккаунта?{' '}
+                    <Button variant="clear" className={styles.switchLink} onClick={onSwitchToRegister}>
+                        Регистрация
+                    </Button>
+                </p>
+            </FormFooter>
+        </Form>
     );
 };

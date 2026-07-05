@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" fill="none">
+  <defs>
+    <radialGradient id="bg" cx="70%" cy="10%" r="120%">
+      <stop offset="0%" stop-color="#17337A"></stop>
+      <stop offset="60%" stop-color="#0C1E4C"></stop>
+      <stop offset="100%" stop-color="#081431"></stop>
+    </radialGradient>
+    <radialGradient id="glow" cx="28%" cy="18%" r="55%">
+      <stop offset="0%" stop-color="#4D9BFF" stop-opacity="0.40"></stop>
+      <stop offset="100%" stop-color="#4D9BFF" stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"></stop>
+      <stop offset="8%" stop-color="#ffffff" stop-opacity="0"></stop>
+    </linearGradient>
+    <clipPath id="squircle">
+      <rect x="0" y="0" width="1024" height="1024" rx="232" ry="232"></rect>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#squircle)">
+    <rect width="1024" height="1024" fill="url(#bg)"></rect>
+    <rect width="1024" height="1024" fill="url(#glow)"></rect>
+    <rect width="1024" height="1024" fill="url(#rim)"></rect>
+  </g>
+
+  
+  <g transform="translate(512 512) scale(6.4) translate(-50 -50)" fill="none" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    
+    <path d="M26 40 H60" stroke="#ffffff"></path>
+    <path d="M52 31 L62 40 L52 49" stroke="#ffffff"></path>
+    
+    <path d="M74 60 H40" stroke="#4D9BFF"></path>
+    <path d="M48 51 L38 60 L48 69" stroke="#4D9BFF"></path>
+  </g>
+</svg>

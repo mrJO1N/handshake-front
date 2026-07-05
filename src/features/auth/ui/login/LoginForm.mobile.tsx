@@ -1,21 +1,22 @@
-import { Button, Input } from '@/shared/ui';
-import styles from '../AuthForm.module.sass';
+import { Button, Input, Form, FormError, FormFooter } from '@/shared/ui';
+import formStyles from '@/shared/ui/Form/Form.module.sass';
+import styles from './LoginForm.module.sass';
 import { FC } from 'react';
 import { LoginFormProps } from '../../formProps';
 import { useLoginForm } from '../../model/useLoginForm';
 
 export const LoginFormMobile: FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) => {
-   const { register, onSubmit, formState: { errors }, isPending } = useLoginForm(onSuccess);
+    const { register, onSubmit, formState: { errors }, isPending } = useLoginForm(onSuccess);
 
     return (
-        <form onSubmit={onSubmit} noValidate className={styles.mobile}>
+        <Form onSubmit={onSubmit} noValidate className={formStyles.mobile}>
             <div>
                 <Input
                     type="email"
                     placeholder="Email"
                     {...register('email')}
                 />
-                {errors.email && <span className={styles.error}>{errors.email.message}</span>}
+                {errors.email && <FormError>{errors.email.message}</FormError>}
             </div>
             <div>
                 <Input
@@ -23,21 +24,22 @@ export const LoginFormMobile: FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
                     placeholder="Пароль"
                     {...register('password')}
                 />
-                {errors.password && <span className={styles.error}>{errors.password.message}</span>}
+                {errors.password && <FormError>{errors.password.message}</FormError>}
             </div>
-            {errors.root && <span className={styles.error}>{errors.root.message}</span>}
+            {errors.root && <FormError>{errors.root.message}</FormError>}
 
-            <div className={styles.formFooter}>
+            <FormFooter>
                 <Button className={styles.submit} variant="colored" type="submit" disabled={isPending}>
                     {isPending ? 'Вход…' : 'Войти'}
                 </Button>
 
                 <p className={styles.switch}>
                     Нет аккаунта?{' '}
-                    <button type="button" className={styles.switchLink} onClick={onSwitchToRegister}>
+                    <Button variant="clear" className={styles.switchLink} onClick={onSwitchToRegister}>
                         Регистрация
-                    </button>
-                </p></div>
-        </form>
+                    </Button>
+                </p>
+            </FormFooter>
+        </Form>
     );
 };

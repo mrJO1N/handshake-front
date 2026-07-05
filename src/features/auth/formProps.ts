@@ -1,5 +1,6 @@
 export interface ModalFormProps {
     onSuccess: () => void;
+    className?: string
 }
 
 export interface RegisterFormProps extends ModalFormProps {

@@ -1,19 +1,19 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/ui';
 import { selectIsAuth, selectUser } from '@/entities/session';
-import { RegisterModal, LoginModal, LogoutButton } from '@/features/auth';
-import { useAuthModals } from '../model/useAuthModals';
+import { LogoutButton } from '@/features/auth';
 
 import styles from './Header.module.sass';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { useIsMobile } from '@/shared/lib/hooks';
+import { useModal } from '@/widgets/modal-root';
 
 export const HeaderMobile = () => {
   const isAuth = useSelector(selectIsAuth);
   const user = useSelector(selectUser);
-  const { active, openLogin, openRegister, close } = useAuthModals();
   const isMobile = useIsMobile()
+  const { open } = useModal()
 
   return (
     <header className={clsx(styles.header, styles.mobile)}>
@@ -34,12 +34,12 @@ export const HeaderMobile = () => {
             <>
               <Button
                 variant="clear"
-                onClick={openLogin}
+                onClick={() => open("login")}
               >
                 Войти
               </Button>
               {
-                isMobile && <Button onClick={openRegister}>
+                isMobile && <Button onClick={() => open("register")}>
                   Регистрация
                 </Button>
               }
@@ -48,17 +48,6 @@ export const HeaderMobile = () => {
           }
         </div>
       </div>
-
-      <LoginModal
-        isOpen={active === 'login'}
-        onClose={close}
-        onSwitchToRegister={openRegister}
-      />
-      <RegisterModal
-        isOpen={active === 'register'}
-        onClose={close}
-        onSwitchToLogin={openLogin}
-      />
     </header>
   );
 };
