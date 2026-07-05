@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/ui';
 import { selectIsAuth, selectUser } from '@/entities/session';
 import { LogoutButton } from '@/features/auth';
@@ -6,12 +6,11 @@ import { LogoutButton } from '@/features/auth';
 import styles from './Header.module.sass';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
-import { useModal } from '@/widgets/modal-root';
 
 export const HeaderMobile = () => {
   const isAuth = useSelector(selectIsAuth);
   const user = useSelector(selectUser);
-  const { open } = useModal()
+  const navigate = useNavigate()
 
   return (
     <header className={clsx(styles.header, styles.mobile)}>
@@ -32,13 +31,11 @@ export const HeaderMobile = () => {
             <>
               <Button
                 variant="clear"
-                onClick={() => open("login")}
+                onClick={() => navigate("/login")}
               >
                 Войти
               </Button>
-
             </>
-
           }
         </div>
       </div>

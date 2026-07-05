@@ -6,7 +6,6 @@ import { AuthPage } from '@/pages/auth';
 import { CreatePostPage } from '@/pages/create-post';
 import { selectIsAuth } from '@/entities/session';
 import { useSelector } from 'react-redux';
-import { FC } from 'react';
 import { ModalRoot } from '@/widgets/modal-root';
 
 export const useRouter = () => {
@@ -18,7 +17,7 @@ export const useRouter = () => {
     { path: "/posts", element: <PostsPage /> },
     { path: "/login", element: <AuthPage variant="login" /> },
     { path: "/register", element: <AuthPage variant="register" /> },
-    { path: "*", element: <>404</> }
+    { path: "*", element: <>404 error</> }
   ]
 
   // private routes

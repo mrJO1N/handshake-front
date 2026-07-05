@@ -1,22 +1,9 @@
 import { CreatePostForm } from "@/features/create-post";
-import { useIsMobile } from "@/shared/lib/hooks";
-import { FC, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { ModalPage } from "@/widgets/modal-root";
+import { FC } from "react";
 
-export const CreatePostPage: FC = () => {
-    const isMobile = useIsMobile()
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (!isMobile) {
-            navigate("/posts")
-        }
-    }, [isMobile, navigate])
-
-    if (!isMobile) return null
-
-    return <>
-        <CreatePostForm onSuccess={() => navigate("/posts")} />
-    </>
-};
-
+export const CreatePostPage: FC = () => (
+    <ModalPage type="createPost">
+        {({ onDone }) => <CreatePostForm onSuccess={onDone} />}
+    </ModalPage>
+);

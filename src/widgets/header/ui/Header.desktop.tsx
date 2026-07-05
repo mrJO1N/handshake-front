@@ -1,17 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/ui';
 import { selectIsAuth, selectUser } from '@/entities/session';
 import { LogoutButton } from '@/features/auth';
 
 import styles from './Header.module.sass';
 import { useSelector } from 'react-redux';
-import { ModalRoot } from '@/widgets/modal-root';
-import { useModal } from '@/widgets/modal-root';
 
 export const HeaderDesktop = () => {
   const isAuth = useSelector(selectIsAuth);
   const user = useSelector(selectUser);
-  const { open } = useModal()
+  const navigate = useNavigate()
 
   return (
     <header className={styles.header}>
@@ -32,11 +30,11 @@ export const HeaderDesktop = () => {
             <>
               <Button
                 variant="clear"
-                onClick={() => open("login")}
+                onClick={() => navigate("/login")}
               >
                 Вход
               </Button>
-              <Button onClick={() => open("register")}>
+              <Button onClick={() => navigate("/register")}>
                 Регистрация
               </Button>
             </>

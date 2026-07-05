@@ -1,57 +1,43 @@
 import { LoginForm, RegisterForm } from "@/features/auth";
 import { CreatePostForm } from "@/features/create-post";
 import { useModal } from "../model/useModal";
-import { selectModalActive } from "@/entities/modal";
+import { selectModalActive, MODAL_TITLES, ModalType } from "@/entities/modal";
 import { useSelector } from "react-redux";
 import { useIsMobile } from "@/shared/lib/hooks";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Modal } from "@/shared/ui";
 
-import styles from "./ModalRoot.module.sass"
+const MODAL_ROUTES: Record<Exclude<ModalType, null>, string> = {
+    login: "/login",
+    register: "/register",
+    createPost: "/posts/create",
+};
 
 export const ModalRoot = () => {
     const active = useSelector(selectModalActive);
-    const { close, open } = useModal();
+    const { close } = useModal();
 
     const isMobile = useIsMobile()
     const navigate = useNavigate()
 
     useEffect(() => {
-        // if (!isMobile) return
-
-        // switch (active) {
-        //     case "login":
-        //         navigate("/login")
-        //         break
-        //     case "register":
-        //         navigate("/register")
-        //         break
-        //     case "createPost":
-        //         navigate("/posts/crea")
-        //         break
-        // }
-        if (isMobile && active === "login") {
-            navigate("/login")
-        } else if (isMobile && active === "register") {
-            navigate("/login")
-        } else if (isMobile && active === "createPost") {
-            navigate("/posts/create")
-        }
+        if (!isMobile || !active) return;
+        navigate(MODAL_ROUTES[active])
     }, [isMobile, active, navigate])
 
     if (isMobile) return null
 
     return <>
-        <Modal isOpen={active === "login"} onClose={close} title="Вход">
-            <LoginForm onSuccess={close} onSwitchToRegister={() => open("register")} />
+        <Modal isOpen={active === "login"} onClose={close} title={MODAL_TITLES.login}>
+            <LoginForm onSuccess={close} onSwitchToRegister={() => navigate("/register")} />
         </Modal>
 
-        <Modal isOpen={active === "register"} onClose={close} title="Регистрация">
-            <RegisterForm onSuccess={close} onSwitchToLogin={() => open("login")} />
+        <Modal isOpen={active === "register"} onClose={close} title={MODAL_TITLES.register}>
+            <RegisterForm onSuccess={close} onSwitchToLogin={() => navigate("/login")} />
         </Modal>
 
-        <Modal isOpen={active === "createPost"} onClose={close} title="Создать пост">
+        <Modal isOpen={active === "createPost"} onClose={close} title={MODAL_TITLES.createPost}>
             <CreatePostForm onSuccess={close} />
         </Modal>
     </>
