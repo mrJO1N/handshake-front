@@ -6,13 +6,11 @@ import { LogoutButton } from '@/features/auth';
 import styles from './Header.module.sass';
 import clsx from 'clsx';
 import { useSelector } from 'react-redux';
-import { useIsMobile } from '@/shared/lib/hooks';
 import { useModal } from '@/widgets/modal-root';
 
 export const HeaderMobile = () => {
   const isAuth = useSelector(selectIsAuth);
   const user = useSelector(selectUser);
-  const isMobile = useIsMobile()
   const { open } = useModal()
 
   return (
@@ -38,11 +36,7 @@ export const HeaderMobile = () => {
               >
                 Войти
               </Button>
-              {
-                isMobile && <Button onClick={() => open("register")}>
-                  Регистрация
-                </Button>
-              }
+
             </>
 
           }

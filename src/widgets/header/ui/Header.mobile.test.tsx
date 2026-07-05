@@ -21,7 +21,6 @@ describe('HeaderMobile', () => {
     renderHeader({ user: null, accessToken: null });
 
     expect(screen.getByRole('button', { name: 'Войти' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Регистрация' })).toBeInTheDocument();
     expect(screen.queryByText('@alice')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'выйти' })).not.toBeInTheDocument();
   });
@@ -32,6 +31,5 @@ describe('HeaderMobile', () => {
     expect(screen.getByText('@alice')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'выйти' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Войти' })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Регистрация' })).not.toBeInTheDocument();
   });
 });

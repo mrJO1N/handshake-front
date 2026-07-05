@@ -1,3 +1,3 @@
-import { useServicesContext } from '@/app/providers/ServicesProvider';
+import { useServicesContext } from '@/app/providers';
 
 export const usePostService = () => useServicesContext().postService;

@@ -13,3 +13,5 @@ export const AppProviders = ({ children }: { children: ReactNode }) => {
         </Provider>
     );
 }
+
+export { useServicesContext } from "./ServicesProvider"

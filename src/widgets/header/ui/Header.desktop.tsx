@@ -6,7 +6,7 @@ import { LogoutButton } from '@/features/auth';
 import styles from './Header.module.sass';
 import { useSelector } from 'react-redux';
 import { ModalRoot } from '@/widgets/modal-root';
-import { useModal } from '@/widgets/modal-root/model/useModal';
+import { useModal } from '@/widgets/modal-root';
 
 export const HeaderDesktop = () => {
   const isAuth = useSelector(selectIsAuth);
