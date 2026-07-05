@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/shared/ui';
+import { Button, ThemeToggle } from '@/shared/ui';
 import { selectIsAuth, selectUser } from '@/entities/session';
 
 import styles from './Header.module.sass';
@@ -18,6 +18,7 @@ export const HeaderDesktop = () => {
         </Link>
 
         <div className={styles.actions}>
+          <ThemeToggle />
           {isAuth && user
             ? <>
               <button className={styles.username} onClick={() => navigate("/users/me")}>

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Button, MinimalTextInput, Form, FormError, FormFooter } from '@/shared/ui';
+import { Button, MinimalTextInput, Form, FormError, FormFooter, ThemeToggle } from '@/shared/ui';
 import { LogoutButton } from '@/features/auth';
 import { UserSettingsFormProps } from '../formProps';
 import { useProfileForm } from '../model/useProfileForm';
@@ -85,6 +85,14 @@ export const UserSettingsFormDesktop: FC<UserSettingsFormProps> = ({ onDeleted, 
                         {password.isSuccess && <span className={styles.success}>Пароль изменён</span>}
                     </FormFooter>
                 </Form>
+            </section>
+
+            <section className={styles.section}>
+                <h3 className={styles.sectionTitle}>Тема</h3>
+                <div className={styles.themeRow}>
+                    <span>Тёмная тема</span>
+                    <ThemeToggle />
+                </div>
             </section>
 
             <section className={styles.section}>

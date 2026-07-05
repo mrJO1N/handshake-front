@@ -5,6 +5,8 @@ import { configureStore, type EnhancedStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { vi } from 'vitest';
 import { sessionReducer } from '@/entities/session';
+import { modalReducer } from '@/entities/modal';
+import { themeReducer } from '@/entities/theme';
 import type { RootState } from '@/app/store';
 import { ServicesProvider, type Services } from '@/app/providers/ServicesProvider';
 import { MemoryRouter } from 'react-router-dom';
@@ -19,7 +21,7 @@ export const createTestQueryClient = () =>
 
 export const createTestStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
-    reducer: { session: sessionReducer },
+    reducer: { session: sessionReducer, modal: modalReducer, theme: themeReducer },
     preloadedState: preloadedState as RootState | undefined,
   });
 

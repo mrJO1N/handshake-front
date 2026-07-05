@@ -1,0 +1,41 @@
+@use '@/shared/config/styles/variables' as *
+
+.toggle
+  display: inline-flex
+  align-items: center
+  border: none
+  background: none
+  padding: 0
+  cursor: pointer
+
+.track
+  position: relative
+  display: inline-flex
+  align-items: center
+  width: 52px
+  height: 28px
+  border-radius: 999px
+  background: $component-bg
+  border: 1px solid $main-blue
+  transition: background 0.2s ease
+
+.thumb
+  position: absolute
+  left: 2px
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 22px
+  height: 22px
+  border-radius: 50%
+  background: $white
+  font-size: 0.9rem
+  line-height: 1
+  transition: transform 0.2s ease
+  transform: translateX(0)
+
+.toggle[aria-checked="true"]
+  .track
+    background: $dark-blue
+  .thumb
+    transform: translateX(24px)
