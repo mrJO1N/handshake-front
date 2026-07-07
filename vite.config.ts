@@ -4,6 +4,7 @@ import path, { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/handshake-front/",
   // tsconfigPaths reads @comp/@const/@assets/@/ from tsconfig.path.json,
   plugins: [react()],
 
@@ -25,7 +26,7 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "build",
+    outDir: "dist",
     sourcemap: true,
   },
 
