@@ -10,4 +10,10 @@ export default defineConfig([
       'fsd/no-public-api-sidestep': 'off',
     },
   },
+  {
+    files: ['src/widgets/post-list/**'],
+    rules: {
+      'fsd/insignificant-slice': 'off',
+    },
+  },
 ]);

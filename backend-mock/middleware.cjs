@@ -1,14 +1,37 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken")
 
-const JWT_SECRET = "hello"
+const JWT_SECRET = "hello";
+
+const ACCESS_TTL = '15m';
+const REFRESH_TTL = '7d';
+
+// --- helpers ---
+
+const signAccess = (userId) =>
+    jwt.sign({ sub: userId, type: 'access' }, JWT_SECRET, { expiresIn: ACCESS_TTL });
+
+const signRefresh = (userId) =>
+    jwt.sign({ sub: userId, type: 'refresh' }, JWT_SECRET, { expiresIn: REFRESH_TTL });
+
+const issueTokens = (userId) => ({
+    accessToken: signAccess(userId),
+    refreshToken: signRefresh(userId),
+});
+
+// Достаёт "Bearer <token>" -> token, либо null
+const getBearer = (req) => {
+    const authHeader = req.get('authorization');
+    if (!authHeader) return null;
+    const token = authHeader.split(' ')[1];
+    return token || null;
+};
 
 module.exports = (req, res, next) => {
 
-    // POST /register - регистрация нового пользователя
+    // POST /register
     if (req.method === "POST" && req.path === "/register") {
         const { username, password, email } = req.body;
 
-        // Валидация входных данных
         if (!username || !password || !email) {
             res.status(400).jsonp({ message: 'Missing username, password, or email' });
             return;
@@ -17,43 +40,35 @@ module.exports = (req, res, next) => {
         const db = req.app.db;
         const users = db.get('users').value();
 
-        // Проверяем, существует ли пользователь с таким username
         const existingUser = users.find(u => u.username === username);
         if (existingUser) {
             res.status(409).jsonp({ message: 'User already exists' });
             return;
         }
 
-        // Создаём нового пользователя
         const newUser = {
             id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
             username,
             email,
-            password, // В реальном приложении нужно хешировать пароль!
+            password,
             createdAt: new Date().toISOString()
         };
 
-        // Сохраняем в БД
         db.get('users').push(newUser).write();
 
-        // Создаём JWT токен
-        const token = jwt.sign({ sub: newUser.id }, JWT_SECRET);
-
-        // Возвращаем пользователя БЕЗ пароля и токен
         const { password: _, ...userWithoutPassword } = newUser;
         res.status(201).jsonp({
             user: userWithoutPassword,
-            accessToken: token
+            ...issueTokens(newUser.id),
         });
 
         return;
     }
 
-    // POST /login - вход пользователя
+    // POST /login
     if (req.method === "POST" && req.path === "/login") {
         const { email, password } = req.body;
 
-        // Валидация входных данных
         if (!email || !password) {
             res.status(400).jsonp({ message: 'Missing username or password' });
             return;
@@ -62,8 +77,6 @@ module.exports = (req, res, next) => {
         const db = req.app.db;
         const users = db.get('users').value();
 
-
-        // Ищем пользователя по username
         const user = users.find(u => u.email === email);
 
         if (!user) {
@@ -71,51 +84,77 @@ module.exports = (req, res, next) => {
             return;
         }
 
-        // Проверяем пароль
         if (user.password !== password) {
             res.status(401).jsonp({ message: 'Invalid username or password' });
             return;
         }
 
-        // Создаём JWT токен
-        const token = jwt.sign({ sub: user.id }, JWT_SECRET);
-
-        // Возвращаем пользователя БЕЗ пароля и токен
         const { password: _, ...userWithoutPassword } = user;
         res.status(200).jsonp({
             user: userWithoutPassword,
-            accessToken: token
+            ...issueTokens(user.id),
         });
 
         return;
     }
 
-    // GET /me - вернуть текущего пользователя по токену
-    if (req.method === 'GET' && req.path === '/me') {
-        const authHeader = req.get('authorization');
+    // POST /refresh - обменять refresh на новую пару токенов
+    if (req.method === 'POST' && req.path === '/refresh') {
+        const { refreshToken } = req.body;
 
-        if (!authHeader) {
-            res.status(401).jsonp({ message: 'Missing authorization header' });
+        if (!refreshToken) {
+            res.status(400).jsonp({ message: 'Missing refreshToken' });
             return;
         }
 
-        // Парсим токен из "Bearer <token>"
-        const token = authHeader.split(' ')[1];
+        try {
+            const decoded = jwt.verify(refreshToken, JWT_SECRET);
+
+            // Проверяем, что это именно refresh, а не access
+            if (decoded.type !== 'refresh') {
+                res.status(401).jsonp({ message: 'Invalid token type' });
+                return;
+            }
+
+            const db = req.app.db;
+            const user = db.get('users').find({ id: decoded.sub }).value();
+
+            if (!user) {
+                res.status(401).jsonp({ message: 'User not found' });
+                return;
+            }
+
+            // Выдаём новую пару (stateless-ротация: старый refresh не отзывается,
+            // но истечёт сам через REFRESH_TTL)
+            res.status(200).jsonp(issueTokens(user.id));
+        } catch (error) {
+            console.error(error);
+            res.status(401).jsonp({ message: 'Invalid refresh token', error: error.message });
+        }
+
+        return;
+    }
+
+    // GET /me
+    if (req.method === 'GET' && req.path === '/me') {
+        const token = getBearer(req);
 
         if (!token) {
-            res.status(401).jsonp({ message: 'Invalid authorization header' });
+            res.status(401).jsonp({ message: 'Missing or invalid authorization header' });
             return;
         }
 
-        // Получаем юзеров из БД
         const db = req.app.db;
         const users = db.get('users').value();
 
         try {
             const decoded = jwt.verify(token, JWT_SECRET);
-            console.log("Decoded token:", decoded)
 
-            // Ищем юзера по id из токена
+            if (decoded.type !== 'access') {
+                res.status(401).jsonp({ message: 'Invalid token type' });
+                return;
+            }
+
             const user = users.find(u => u.id === decoded.sub);
 
             if (!user) {
@@ -123,30 +162,22 @@ module.exports = (req, res, next) => {
                 return;
             }
 
-            // Возвращаем юзера БЕЗ пароля
             const { password: _, ...userWithoutPassword } = user;
             res.jsonp(userWithoutPassword);
         } catch (error) {
-            console.error(error)
+            console.error(error);
             res.status(401).jsonp({ message: 'Invalid token', error: error.message });
         }
 
         return;
     }
 
-    // PATCH /me - обновить профиль (username/email)
+    // PATCH /me
     if (req.method === 'PATCH' && req.path === '/me') {
-        const authHeader = req.get('authorization');
-
-        if (!authHeader) {
-            res.status(401).jsonp({ message: 'Missing authorization header' });
-            return;
-        }
-
-        const token = authHeader.split(' ')[1];
+        const token = getBearer(req);
 
         if (!token) {
-            res.status(401).jsonp({ message: 'Invalid authorization header' });
+            res.status(401).jsonp({ message: 'Missing or invalid authorization header' });
             return;
         }
 
@@ -154,6 +185,12 @@ module.exports = (req, res, next) => {
 
         try {
             const decoded = jwt.verify(token, JWT_SECRET);
+
+            if (decoded.type !== 'access') {
+                res.status(401).jsonp({ message: 'Invalid token type' });
+                return;
+            }
+
             const users = db.get('users').value();
             const user = users.find(u => u.id === decoded.sub);
 
@@ -182,26 +219,19 @@ module.exports = (req, res, next) => {
             const { password: _, ...userWithoutPassword } = updatedUser;
             res.jsonp(userWithoutPassword);
         } catch (error) {
-            console.error(error)
+            console.error(error);
             res.status(401).jsonp({ message: 'Invalid token', error: error.message });
         }
 
         return;
     }
 
-    // PATCH /me/password - изменить пароль
+    // PATCH /me/password
     if (req.method === 'PATCH' && req.path === '/me/password') {
-        const authHeader = req.get('authorization');
-
-        if (!authHeader) {
-            res.status(401).jsonp({ message: 'Missing authorization header' });
-            return;
-        }
-
-        const token = authHeader.split(' ')[1];
+        const token = getBearer(req);
 
         if (!token) {
-            res.status(401).jsonp({ message: 'Invalid authorization header' });
+            res.status(401).jsonp({ message: 'Missing or invalid authorization header' });
             return;
         }
 
@@ -209,6 +239,12 @@ module.exports = (req, res, next) => {
 
         try {
             const decoded = jwt.verify(token, JWT_SECRET);
+
+            if (decoded.type !== 'access') {
+                res.status(401).jsonp({ message: 'Invalid token type' });
+                return;
+            }
+
             const user = db.get('users').find({ id: decoded.sub }).value();
 
             if (!user) {
@@ -234,26 +270,19 @@ module.exports = (req, res, next) => {
             const { password: _, ...userWithoutPassword } = updatedUser;
             res.jsonp(userWithoutPassword);
         } catch (error) {
-            console.error(error)
+            console.error(error);
             res.status(401).jsonp({ message: 'Invalid token', error: error.message });
         }
 
         return;
     }
 
-    // DELETE /me - удалить аккаунт
+    // DELETE /me
     if (req.method === 'DELETE' && req.path === '/me') {
-        const authHeader = req.get('authorization');
-
-        if (!authHeader) {
-            res.status(401).jsonp({ message: 'Missing authorization header' });
-            return;
-        }
-
-        const token = authHeader.split(' ')[1];
+        const token = getBearer(req);
 
         if (!token) {
-            res.status(401).jsonp({ message: 'Invalid authorization header' });
+            res.status(401).jsonp({ message: 'Missing or invalid authorization header' });
             return;
         }
 
@@ -261,6 +290,12 @@ module.exports = (req, res, next) => {
 
         try {
             const decoded = jwt.verify(token, JWT_SECRET);
+
+            if (decoded.type !== 'access') {
+                res.status(401).jsonp({ message: 'Invalid token type' });
+                return;
+            }
+
             const user = db.get('users').find({ id: decoded.sub }).value();
 
             if (!user) {
@@ -272,14 +307,14 @@ module.exports = (req, res, next) => {
 
             res.status(204).end();
         } catch (error) {
-            console.error(error)
+            console.error(error);
             res.status(401).jsonp({ message: 'Invalid token', error: error.message });
         }
 
         return;
     }
 
-    // GET /posts/by-author/:username - получить посты автора
+    // GET /posts/by-author/:username
     if (req.method === 'GET' && req.path.startsWith('/posts/by-author/')) {
         const username = req.path.replace('/posts/by-author/', '');
         const db = req.app.db;

@@ -1,5 +1,7 @@
 export { useUpdateProfile } from "./model/useUpdateProfile"
 export { useChangePassword } from "./model/useChangePassword"
 export { useDeleteAccount } from "./model/useDeleteAccount"
+export { useLogout } from "./model/useLogout"
 export { UserSettingsForm } from "./ui/UserSettingsForm"
+export { LogoutButton } from "./ui/LogoutButton"
 export * from "./formProps"

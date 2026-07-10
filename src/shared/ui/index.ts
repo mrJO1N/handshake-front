@@ -3,4 +3,5 @@ export { Input } from "./Input/Input"
 export { Modal, type ModalProps } from './Modal/Modal';
 export { MinimalTextInput } from "./MinimalTextInput/MinimalTextInput"
 export { Form, FormError, FormFooter } from "./Form/Form"
+export type { ModalFormProps } from "./Form/formProps"
 export { ThemeToggle } from "./ThemeToggle/ThemeToggle"

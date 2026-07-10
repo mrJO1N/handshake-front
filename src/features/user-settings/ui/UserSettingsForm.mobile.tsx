@@ -1,7 +1,8 @@
 import { FC, useState } from 'react';
-import { Button, Input, Form, FormError, FormFooter, ThemeToggle } from '@/shared/ui';
+import { Button, Input, Form, FormError, FormFooter } from '@/shared/ui';
+import { ThemeToggle } from '@/entities/theme';
 import formStyles from '@/shared/ui/Form/Form.module.sass';
-import { LogoutButton } from '@/features/auth';
+import { LogoutButton } from './LogoutButton';
 import { UserSettingsFormProps } from '../formProps';
 import { useProfileForm } from '../model/useProfileForm';
 import { usePasswordForm } from '../model/usePasswordForm';

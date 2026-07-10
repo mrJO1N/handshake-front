@@ -1,4 +1,4 @@
-import { FC, type ReactNode, useEffect, useRef, useState } from 'react';
+import { FC, type ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.sass';
 
@@ -13,30 +13,21 @@ const CLOSE_ANIMATION_MS = 220; // держим в синхроне с .closing 
 
 export const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   const [mounted, setMounted] = useState(isOpen);
-  const [closing, setClosing] = useState(false);
-  const closeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined,
-  );
 
+  if (isOpen && !mounted) {
+    setMounted(true);
+  }
+
+  // Effect only for deffered unmount
   useEffect(() => {
-    if (isOpen) {
-      clearTimeout(closeTimeout.current);
-      setClosing(false);
-      setMounted(true);
-      return;
-    }
+    if (isOpen) return;
 
-    if (!mounted) return;
+    const timeout = setTimeout(() => setMounted(false), CLOSE_ANIMATION_MS);
+    return () => clearTimeout(timeout);
+  }, [isOpen]);
 
-    setClosing(true);
-    closeTimeout.current = setTimeout(() => {
-      setMounted(false);
-      setClosing(false);
-    }, CLOSE_ANIMATION_MS);
 
-    return () => clearTimeout(closeTimeout.current);
-  }, [isOpen, mounted]);
-
+  // Esc + scroll
   useEffect(() => {
     if (!mounted) return;
 
@@ -44,7 +35,7 @@ export const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
       if (e.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', onKeyDown);
-    document.body.style.overflow = 'hidden'; // блок скролла фона
+    document.body.style.overflow = 'hidden';
 
     return () => {
       document.removeEventListener('keydown', onKeyDown);
@@ -53,6 +44,8 @@ export const Modal: FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
   }, [mounted, onClose]);
 
   if (!mounted) return null;
+
+  const closing = !isOpen;
 
   return createPortal(
     <div

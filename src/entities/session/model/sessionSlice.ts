@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { IUser } from '@/entities/user';
+import type { IUser } from '@/shared/contracts';
 
 export interface SessionState {
   user: IUser | null;

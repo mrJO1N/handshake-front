@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { selectUser, selectAccessToken, selectIsAuth } from './selectors';
-import type { RootState } from '@/app/store';
+import type { SessionState } from './sessionSlice';
 import type { IUser } from '@/entities/user';
 
 const user: IUser = { id: '1', email: 'user@example.com', username: 'user' };
 
-const buildState = (session: RootState['session']): RootState => ({ session });
+const buildState = (session: SessionState) => ({ session });
 
 describe('session selectors', () => {
   it('selectUser should return the user from state', () => {

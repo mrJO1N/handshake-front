@@ -1,11 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { useUserService } from '@/entities/user';
+import { userService } from '@/entities/user';
 import type { RegisterDto } from '@/entities/user';
 import { setSession } from '@/entities/session';
 import { useDispatch } from 'react-redux';
 
 export const useRegister = () => {
-  const userService = useUserService();
   const dispatch = useDispatch();
 
   return useMutation({

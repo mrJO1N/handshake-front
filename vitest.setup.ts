@@ -2,9 +2,10 @@ import { expect, afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-// Очищаем DOM после каждого теста
+// Очищаем DOM и восстанавливаем spy на сервисах-синглтонах после каждого теста
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
 });
 
 // Моки для window методов
