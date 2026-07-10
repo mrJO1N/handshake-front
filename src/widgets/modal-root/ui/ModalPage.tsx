@@ -25,9 +25,12 @@ export const ModalPage: FC<ModalPageProps> = ({ type, children }) => {
     const { open, close } = useModal();
     const wasOpenRef = useRef(false);
 
-    const activeRef = useRef(active)
-    activeRef.current = active
+    const activeRef = useRef(active);
     const pendingCloseRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+    useEffect(() => {
+        activeRef.current = active;
+    }, [active]);
 
     const goBack = () => {
         if (location.key === 'default') {
