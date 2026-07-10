@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "gitpush":"yarn lint && yarn typecheck && yarn test && yarn build",
+    "gitpush":"yarn lint && yarn lint:fsd && yarn typecheck && yarn test && yarn build",
     "start": "vite build && vite preview",
     "dev": "vite",
     "build": "vite build",
