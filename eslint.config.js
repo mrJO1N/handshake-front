@@ -36,17 +36,17 @@ export default tseslint.config(
       'react-refresh/only-export-components': 'warn',
 
       // ГЛАВНОЕ ПРАВИЛО FSD: слой может импортить только слои НИЖЕ себя
-      'boundaries/element-types': [
+      'boundaries/dependencies': [
         'error',
         {
           default: 'disallow',
           rules: [
-            { from: 'app',      allow: ['pages', 'widgets', 'features', 'entities', 'shared'] },
-            { from: 'pages',    allow: ['widgets', 'features', 'entities', 'shared'] },
-            { from: 'widgets',  allow: ['features', 'entities', 'shared'] },
-            { from: 'features', allow: ['entities', 'shared'] },
-            { from: 'entities', allow: ['shared'] },
-            { from: 'shared',   allow: ['shared'] },
+            { from: { type: 'app' },      allow: { to: { type: ['pages', 'widgets', 'features', 'entities', 'shared'] } } },
+            { from: { type: 'pages' },    allow: { to: { type: ['widgets', 'features', 'entities', 'shared'] } } },
+            { from: { type: 'widgets' },  allow: { to: { type: ['features', 'entities', 'shared'] } } },
+            { from: { type: 'features' }, allow: { to: { type: ['entities', 'shared'] } } },
+            { from: { type: 'entities' }, allow: { to: { type: ['shared'] } } },
+            { from: { type: 'shared' },   allow: { to: { type: ['shared'] } } },
           ],
         },
       ],

@@ -1,4 +1,3 @@
 export { createUserService, type UserService } from './api/createUserService';
-export { useUserService } from './api/useUserService';
+export { userService } from './api/userService';
 export type { IUser, RegisterDto, LoginDto, AuthResponse, UpdateProfileDto, ChangePasswordDto } from './model/types';
-export { useInitializeAuth } from "./api/useInitializeAuth"

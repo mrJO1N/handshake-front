@@ -1,8 +1,6 @@
-export interface IUser {
-  id: string;
-  email: string;
-  username: string;
-}
+import type { IUser } from '@/shared/contracts';
+
+export type { IUser };
 
 export interface RegisterDto {
   email: string;

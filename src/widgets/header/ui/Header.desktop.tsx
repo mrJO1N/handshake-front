@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, ThemeToggle } from '@/shared/ui';
+import { Button } from '@/shared/ui';
 import { selectIsAuth, selectUser } from '@/entities/session';
+import { ThemeToggle } from '@/entities/theme';
 
 import styles from './Header.module.sass';
 import { useSelector } from 'react-redux';

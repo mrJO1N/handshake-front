@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { waitFor } from '@testing-library/react';
 import { usePosts } from './usePosts';
-import { createMockServices, renderHookWithProviders } from '@/app/test/renderWithProviders';
+import { renderHookWithProviders } from '@/app/test/renderWithProviders';
+import { postService } from './postService';
 import type { IPostContent } from '../model/types';
 
 const posts: IPostContent[] = [
@@ -17,27 +18,23 @@ const posts: IPostContent[] = [
 
 describe('usePosts', () => {
   it('should query posts using the given search query', async () => {
-    const services = createMockServices({
-      postService: { findPostsByQuery: vi.fn().mockResolvedValue(posts) },
-    });
+    const findPostsByQuerySpy = vi.spyOn(postService, 'findPostsByQuery').mockResolvedValue(posts);
 
-    const { result } = renderHookWithProviders(() => usePosts('hello'), { services });
+    const { result } = renderHookWithProviders(() => usePosts('hello'));
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(services.postService.findPostsByQuery).toHaveBeenCalledWith('hello');
+    expect(findPostsByQuerySpy).toHaveBeenCalledWith('hello');
     expect(result.current.data).toEqual(posts);
   });
 
   it('should default to an empty query when none is given', async () => {
-    const services = createMockServices({
-      postService: { findPostsByQuery: vi.fn().mockResolvedValue(posts) },
-    });
+    const findPostsByQuerySpy = vi.spyOn(postService, 'findPostsByQuery').mockResolvedValue(posts);
 
-    const { result } = renderHookWithProviders(() => usePosts(), { services });
+    const { result } = renderHookWithProviders(() => usePosts());
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(services.postService.findPostsByQuery).toHaveBeenCalledWith('');
+    expect(findPostsByQuerySpy).toHaveBeenCalledWith('');
   });
 });

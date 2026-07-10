@@ -1,26 +1,86 @@
-react frontend for handshake.ru
-I study in university and it is my home work for subject 'social project'
+# handshake / ИПОРУКАМ
 
-## init
+Платформа для безденежного обмена между пользователями — «меняйся, а не покупай».
+Это фронтенд проекта.
+
+> Пользователь указывает, что хочет получить и что готов предложить взамен. Никаких денег — только прямой бартер.
+
+## Стек
+
+**Архитектура:** Feature-Sliced Design (FSD) с автоматической проверкой границ слоёв через Steiger.
+
+**Ядро:** React 18 + TypeScript (strict) · Vite
+
+**Состояние:** Redux Toolkit (клиентское состояние, сессия) · TanStack Query (серверное состояние, кеширование, инвалидация)
+
+**Формы и валидация:** react-hook-form + Zod
+
+**Стили:** SASS-модули с дизайн-токенами
+
+**Тесты:** Vitest + Testing Library
+
+**Инфраструктура:** ESLint (границы FSD) · CI/CD через GitHub Actions
+
+## Архитектурные решения
+
+- **Feature-Sliced Design** — однонаправленные зависимости между слоями (app → pages → widgets → features → entities → shared), проверяются линтером на каждом коммите.
+- **Dependency Injection** — сервисы создаются фабриками и прокидываются через React Context, что делает их подменяемыми в тестах без моков модулей.
+- **Разделение состояния** — серверные данные живут в TanStack Query (кеш, дедупликация, инвалидация), клиентские — в Redux Toolkit. Никакого дублирования источников правды.
+- **JWT-авторизация** — access-токен в сторе, автоматическая подстановка в запросы, обработка 401.
+- **Централизованный менеджер модалок** — открытие любой модалки из любого компонента одной строкой.
+
+## Установка
+
+Требования: Node.js, yarn.
+
+```sh
+git clone https://github.com/mrJO1N/handshake-front
+cd handshake-front
+yarn
+```
+
+## Запуск
+
+**Фронтенд** (dev-режим):
+```sh
+yarn dev
+```
+
+**Мок-бэкенд** (json-server с авторизацией) — в отдельном терминале:
+```sh
+yarn mock
+```
+
+Приложение поднимается на `0.0.0.0`, мок-API — на порту 3901.
+
+## Сборка
+
+```sh
+yarn build      # production-сборка в статику (html/css/js)
+```
+
+## Тесты
+
+```sh
+yarn test           # прогон тестов
+yarn test:coverage  # с отчётом о покрытии
+```
+
+## Качество кода
+
+```sh
+yarn lint       # ESLint
+yarn lint:fsd   # проверка границ слоёв FSD (Steiger)
+```
+
+## Структура
 
 ```
-yarn install
-```
-
-or
-
-```
-npm i
-```
-
-## start dev server
-
-```
-yarn start
-```
-
-or
-
-```
-npm run start
+src/
+├── app/        # инициализация: провайдеры, роутер, store, стили
+├── pages/      # композиция страниц
+├── widgets/    # самостоятельные UI-блоки (header, post-list)
+├── features/   # действия пользователя (auth, create-post)
+├── entities/   # бизнес-сущности (post, user, session)
+└── shared/     # переиспользуемое: ui-kit, api-клиент, конфиг
 ```

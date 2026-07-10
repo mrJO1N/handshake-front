@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { Button, MinimalTextInput, Form, FormError } from '@/shared/ui';
-import { ModalFormProps } from '@/features/auth'
+import { Button, MinimalTextInput, Form, FormError, ModalFormProps } from '@/shared/ui';
 import { useCreatePostForm } from '../model/useCreatePostForm';
 
 export const CreatePostFormDesktop: FC<ModalFormProps> = ({ onSuccess }) => {

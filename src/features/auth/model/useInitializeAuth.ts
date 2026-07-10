@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useUserService } from './useUserService';
+import { userService } from '@/entities/user';
 import { setSession, clearSession } from '@/entities/session';
 import { useDispatch } from 'react-redux';
 
 export const useInitializeAuth = () => {
-  const userService = useUserService();
   const dispatch = useDispatch();
 
   const { data: user, isError } = useQuery({
@@ -35,5 +34,5 @@ export const useInitializeAuth = () => {
       userService.clearToken();
       dispatch(clearSession());
     }
-  }, [user, isError, dispatch, userService]);
+  }, [user, isError, dispatch]);
 };

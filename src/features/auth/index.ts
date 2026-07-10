@@ -1,7 +1,6 @@
 export { useLogin } from "./model/useLogin"
 export { useRegister } from "./model/useRegister"
-export { useLogout } from "./model/useLogout"
+export { useInitializeAuth } from "./model/useInitializeAuth"
 export { LoginForm } from "./ui/login/LoginForm"
 export { RegisterForm } from "./ui/register/RegisterForm"
-export { LogoutButton } from "./ui/LogoutButton"
 export * from "./formProps"

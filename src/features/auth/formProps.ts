@@ -1,7 +1,6 @@
-export interface ModalFormProps {
-    onSuccess: () => void;
-    className?: string
-}
+import type { ModalFormProps } from '@/shared/ui';
+
+export type { ModalFormProps };
 
 export interface RegisterFormProps extends ModalFormProps {
     onSwitchToLogin: () => void;

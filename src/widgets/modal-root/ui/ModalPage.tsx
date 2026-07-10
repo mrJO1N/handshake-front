@@ -25,6 +25,10 @@ export const ModalPage: FC<ModalPageProps> = ({ type, children }) => {
     const { open, close } = useModal();
     const wasOpenRef = useRef(false);
 
+    const activeRef = useRef(active)
+    activeRef.current = active
+    const pendingCloseRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
     const goBack = () => {
         if (location.key === 'default') {
             navigate('/', { replace: true });
@@ -33,7 +37,7 @@ export const ModalPage: FC<ModalPageProps> = ({ type, children }) => {
         }
     };
 
-    
+
     useEffect(() => {
         if (isMobile) return;
         open(type);
@@ -55,6 +59,20 @@ export const ModalPage: FC<ModalPageProps> = ({ type, children }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMobile, active, type]);
+
+    useEffect(() => {
+        if (pendingCloseRef.current) {
+            clearTimeout(pendingCloseRef.current);
+            pendingCloseRef.current = undefined;
+        }
+
+        return () => {
+            pendingCloseRef.current = setTimeout(() => {
+                if (activeRef.current === type) close();
+            }, 0);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (!isMobile) return null;
 

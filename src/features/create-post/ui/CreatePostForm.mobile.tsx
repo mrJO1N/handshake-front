@@ -1,7 +1,6 @@
 import { FC } from 'react';
-import { Button, Input, Form, FormError } from '@/shared/ui';
+import { Button, Input, Form, FormError, ModalFormProps } from '@/shared/ui';
 import formStyles from '@/shared/ui/Form/Form.module.sass';
-import { ModalFormProps } from '@/features/auth';
 import { useCreatePostForm } from '../model/useCreatePostForm';
 
 export const CreatePostFormMobile: FC<ModalFormProps> = ({ onSuccess }) => {

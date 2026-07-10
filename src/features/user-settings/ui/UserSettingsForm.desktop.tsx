@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
-import { Button, MinimalTextInput, Form, FormError, FormFooter, ThemeToggle } from '@/shared/ui';
-import { LogoutButton } from '@/features/auth';
+import { Button, MinimalTextInput, Form, FormError, FormFooter } from '@/shared/ui';
+import { ThemeToggle } from '@/entities/theme';
+import { LogoutButton } from './LogoutButton';
 import { UserSettingsFormProps } from '../formProps';
 import { useProfileForm } from '../model/useProfileForm';
 import { usePasswordForm } from '../model/usePasswordForm';

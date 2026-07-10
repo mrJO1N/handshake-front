@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { waitFor } from '@testing-library/react';
 import { useCreatePost } from './useCreatePost';
-import { createMockServices, createTestQueryClient, renderHookWithProviders } from '@/app/test/renderWithProviders';
+import { createTestQueryClient, renderHookWithProviders } from '@/app/test/renderWithProviders';
+import { postService } from './postService';
 import type { CreatePostDto, IPostContent } from '../model/types';
 
 const dto: CreatePostDto = {
@@ -16,13 +17,11 @@ const createdPost: IPostContent = { id: '1', ...dto };
 
 describe('useCreatePost', () => {
   it('should invalidate the posts query on success', async () => {
-    const services = createMockServices({
-      postService: { createPost: vi.fn().mockResolvedValue(createdPost) },
-    });
+    vi.spyOn(postService, 'createPost').mockResolvedValue(createdPost);
     const queryClient = createTestQueryClient();
     const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
-    const { result } = renderHookWithProviders(() => useCreatePost(), { services, queryClient });
+    const { result } = renderHookWithProviders(() => useCreatePost(), { queryClient });
 
     result.current.mutate(dto);
 
@@ -32,13 +31,11 @@ describe('useCreatePost', () => {
   });
 
   it('should not invalidate the posts query when the mutation fails', async () => {
-    const services = createMockServices({
-      postService: { createPost: vi.fn().mockRejectedValue(new Error('Server error')) },
-    });
+    vi.spyOn(postService, 'createPost').mockRejectedValue(new Error('Server error'));
     const queryClient = createTestQueryClient();
     const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries');
 
-    const { result } = renderHookWithProviders(() => useCreatePost(), { services, queryClient });
+    const { result } = renderHookWithProviders(() => useCreatePost(), { queryClient });
 
     result.current.mutate(dto);
 

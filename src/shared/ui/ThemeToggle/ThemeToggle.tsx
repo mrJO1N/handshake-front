@@ -1,22 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
-import { selectTheme, toggleTheme } from '@/entities/theme';
 import styles from './ThemeToggle.module.sass';
 
 interface ThemeToggleProps {
+  isDark: boolean;
+  onToggle: () => void;
   className?: string;
 }
 
-export const ThemeToggle = ({ className }: ThemeToggleProps) => {
-  const dispatch = useDispatch();
-  const theme = useSelector(selectTheme);
-  const isDark = theme === 'dark';
-
+export const ThemeToggle = ({ isDark, onToggle, className }: ThemeToggleProps) => {
   return (
     <button
       type="button"
       className={clsx(styles.toggle, className)}
-      onClick={() => dispatch(toggleTheme())}
+      onClick={onToggle}
       role="switch"
       aria-checked={isDark}
       aria-label="Тёмная тема"
